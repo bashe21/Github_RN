@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
+import AuthContext from '../navigator/AuthContext'
 
 const styles = StyleSheet.create({
     container: {
@@ -10,10 +11,12 @@ const styles = StyleSheet.create({
 })
 
 export default class WelcomePage extends React.Component {
+    static contextType = AuthContext;
     componentDidMount() {
         this.timer = setTimeout(() => {
             // 跳转到首页
-
+            
+            
         }, 200);
     }
 
@@ -21,11 +24,11 @@ export default class WelcomePage extends React.Component {
         // 页面销毁时，清空计时器
         this.timer && clearTimeout(this.timer);
     }
-    
+
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome to you!</Text>
+                <Text>Welcome to you1!</Text>
             </View>
         )
     }

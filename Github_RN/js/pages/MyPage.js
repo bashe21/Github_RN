@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class WelcomePage extends React.Component {
+export default class MyPage extends React.Component {
     componentDidMount() {
         this.timer = setTimeout(() => {
             // 跳转到首页
@@ -25,7 +25,7 @@ export default class WelcomePage extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Welcome to you!</Text>
+                <Text>MyPage!</Text>
             </View>
         )
     }
