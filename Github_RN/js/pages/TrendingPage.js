@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Button} from 'react-native';
+import {ChangeStyleContext} from '../navigator/ChangeTheme';
 
 const styles = StyleSheet.create({
     container: {
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
 })
 
 export default class TrendingPage extends React.Component {
+    static contextType = ChangeStyleContext;
     componentDidMount() {
         this.timer = setTimeout(() => {
             // 跳转到首页
@@ -26,6 +28,13 @@ export default class TrendingPage extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>TrendingPage!</Text>
+                <Button title="changeTabbarLabel" onPress={
+                    () => {
+                        const {navigation} = this.props;
+                        navigation.setOptions({tabBarLabel: 'hello1'});
+                    }
+                } />
+                <Button title="changeTabbarStyle" onPress={this.context} />
             </View>
         )
     }

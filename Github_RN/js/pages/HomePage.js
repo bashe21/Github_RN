@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {createContext} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PopularPage from './PopularPage';
 import TrendingPage from './TrendingPage';
@@ -9,6 +9,7 @@ import MyPage from './MyPage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {ChangeStyleContext} from '../navigator/ChangeTheme';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,50 +21,90 @@ const styles = StyleSheet.create({
     }
 })
 
+const theme = {
+    style1: {
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+    },
+    style2: {
+        activeTintColor: 'blue',
+        inactiveTintColor: 'red',
+    },
+}
+
+function getHeaderTitle(route) {
+    // If the focused route is not found, we need to assume it's the initial screen
+    // This can happen during if there hasn't been any navigation inside the screen
+    // In our case, it's "Feed" as that's the first screen inside the navigator
+    const routeName = getFocusedRouteNameFromRoute(route) ?? '最热';
+    switch (routeName) {
+      case '最热':
+        return '最热';
+      case '趋势':
+        return '趋势';
+      case '收藏':
+        return '收藏';
+      case '我的':
+          return '我的';
+    }
+  }
+
 export default class HomePage extends React.Component {
-    componentDidMount() {
-        this.timer = setTimeout(() => {
-            // 跳转到首页
-
-        }, 200);
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            style: theme.style1,
+            changeStyle: () => {
+                this.state.style === theme.style1 ? this.setState({style: theme.style2}) : this.setState({style: theme.style1})
+            },
+        };
     }
 
-    componentWillUnmount() {
-        // 页面销毁时，清空计时器
-        this.timer && clearTimeout(this.timer);
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     const {navigation} = nextProps;
+    //     const {route} = nextProps;
+    //     navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+    //     return true;
+    // }
 
     render() {
         return (
-            <Tab.Navigator
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
-                        let iconName;
-                        if (route.name === '最热') {
-                            iconName = 'whatshot';
-                            return <MaterialIcons name={iconName} size={size} color={color} />;
-                        } else if (route.name === '趋势') {
-                            iconName = 'md-trending-up';
-                            return <Ionicons name={iconName} size={size} color={color} />;
-                        } else if (route.name === '收藏') {
-                            iconName = 'favotite';
-                            return <MaterialIcons name={iconName} size={size} color={color} />;
-                        } else {
-                            iconName = 'user';
-                            return <Entypo name={iconName} size={size} color={color} />;
-                        }
-                    },
-                })}
-                tabBarOptions={{
-                    activeTintColor: 'tomato',
-                    inactiveTintColor: 'gray',
-                }}
-            >
-                <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
-                <Tab.Screen name="趋势" component={TrendingPage} />
-                <Tab.Screen name="收藏" component={FavoritePage} />
-                <Tab.Screen name="我的" component={MyPage} />
-            </Tab.Navigator>
+            <ChangeStyleContext.Provider value={this.state.changeStyle}>
+                <NavigationContainer>
+                    <Tab.Navigator
+                        screenOptions={({route}) => ({
+                            tabBarIcon: ({focused, color, size}) => {
+                                let iconName;
+                                if (route.name === '最热') {
+                                    iconName = 'whatshot';
+                                    return <MaterialIcons name={iconName} size={size} color={color} />;
+                                } else if (route.name === '趋势') {
+                                    iconName = 'md-trending-up';
+                                    return <Ionicons name={iconName} size={size} color={color} />;
+                                } else if (route.name === '收藏') {
+                                    iconName = 'favotite';
+                                    return <MaterialIcons name={iconName} size={size} color={color} />;
+                                } else {
+                                    iconName = 'user';
+                                    return <Entypo name={iconName} size={size} color={color} />;
+                                }
+                            },
+                        })}
+                        tabBarOptions={{
+                            activeTintColor: this.state.style.activeTintColor,
+                            inactiveTintColor: this.state.style.inactiveTintColor,
+                        }}
+                >
+                        <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
+                        <Tab.Screen name="趋势" component={TrendingPage} />
+                        <Tab.Screen name="收藏" component={FavoritePage} />
+                        <Tab.Screen name="我的" component={MyPage} />
+                    </Tab.Navigator>
+                </NavigationContainer>
+            </ChangeStyleContext.Provider>
+            
+            
         )
     }
 }
