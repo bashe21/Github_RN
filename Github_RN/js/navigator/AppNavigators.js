@@ -48,17 +48,16 @@ function AppNavigators() {
     )
 
     return (
-        // <AuthContext.Provider value={authContext}>
-        //     {/* <NavigationContainer>
-        //         <Stack.Navigator>
-        //             {state.isLoading ? 
-        //             (<Stack.Screen name="Welcome" component={WelcomePage} />) :
-        //             (<Stack.Screen name="Homepage" component={HomePage} />)}
-        //         </Stack.Navigator>
-        //     </NavigationContainer> */}
-        //     {state.isLoading ? <WelcomePage/> : <HomePage />}
-        // </AuthContext.Provider>
-        <HomePage />
+        <AuthContext.Provider value={authContext}>
+            {/* <NavigationContainer>
+                <Stack.Navigator>
+                    {state.isLoading ? 
+                    (<Stack.Screen name="Welcome" component={WelcomePage} />) :
+                    (<Stack.Screen name="Homepage" component={HomePage} />)}
+                </Stack.Navigator>
+            </NavigationContainer> */}
+            {state.isLoading ? <WelcomePage/> : <HomePage />}
+        </AuthContext.Provider>
     )
 }
 
