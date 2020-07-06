@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
 import {ChangeStyleContext} from '../navigator/ChangeTheme';
+import {connect} from 'react-redux';
+import actions from '../actions'
 
 const styles = StyleSheet.create({
     container: {
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class TrendingPage extends React.Component {
+class TrendingPage extends React.Component {
     static contextType = ChangeStyleContext;
     componentDidMount() {
         this.timer = setTimeout(() => {
@@ -34,8 +36,14 @@ export default class TrendingPage extends React.Component {
                         navigation.setOptions({tabBarLabel: 'hello1'});
                     }
                 } />
-                <Button title="changeTabbarStyle" onPress={this.context} />
+                <Button title="changeTabbarStyle" onPress={() => this.props.onThemeChange('orange')} />
             </View>
         )
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    onThemeChange: theme => dispatch(actions.onThemeChange(theme)),
+})
+
+export default connect(mapDispatchToProps)(TrendingPage);

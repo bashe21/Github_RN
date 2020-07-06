@@ -10,6 +10,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {ChangeStyleContext} from '../navigator/ChangeTheme';
+import {connect} from 'react-redux';
+import { exp } from 'react-native-reanimated';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +51,7 @@ function getHeaderTitle(route) {
     }
   }
 
-export default class HomePage extends React.Component {
+class HomePage extends React.Component {
     
     constructor(props) {
         super(props);
@@ -92,8 +94,10 @@ export default class HomePage extends React.Component {
                             },
                         })}
                         tabBarOptions={{
-                            activeTintColor: this.state.style.activeTintColor,
-                            inactiveTintColor: this.state.style.inactiveTintColor,
+                            // activeTintColor: this.state.style.activeTintColor,
+                            // inactiveTintColor: this.state.style.inactiveTintColor,
+                            activeTintColor: this.props.theme,
+                            inactiveTintColor: 'gray',
                         }}
                 >
                         <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
@@ -108,3 +112,10 @@ export default class HomePage extends React.Component {
         )
     }
 }
+
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme,
+})
+
+export default connect(mapStateToProps)(HomePage);
