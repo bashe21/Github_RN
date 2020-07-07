@@ -46,4 +46,4 @@ const mapDispatchToProps = dispatch => ({
     onThemeChange: theme => dispatch(actions.onThemeChange(theme)),
 })
 
-export default connect(mapDispatchToProps)(TrendingPage);
+export default connect(null, mapDispatchToProps)(TrendingPage);
