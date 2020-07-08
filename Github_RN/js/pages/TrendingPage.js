@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
 import {ChangeStyleContext} from '../navigator/ChangeTheme';
 import {connect} from 'react-redux';
-import actions from '../actions'
+import actions from '../actions';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     container: {
@@ -11,6 +12,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     }
 })
+
+const Stack = createStackNavigator();
 
 class TrendingPage extends React.Component {
     static contextType = ChangeStyleContext;
@@ -37,6 +40,12 @@ class TrendingPage extends React.Component {
                     }
                 } />
                 <Button title="changeTabbarStyle" onPress={() => this.props.onThemeChange('orange')} />
+                <Button title="skip to FetchPage" onPress={
+                    () => {
+                        const {navigation} = this.props;
+                        navigation.navigate('FetchDemoPage');
+                    }
+                } />
             </View>
         )
     }

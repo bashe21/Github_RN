@@ -4,6 +4,7 @@ import {NavigationContainer, getFocusedRouteNameFromRoute} from '@react-navigati
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PopularPage from './PopularPage';
 import TrendingPage from './TrendingPage';
+import TrendingStackNavigator from '../navigator/TrendingStackNavigator';
 import FavoritePage from './FavoritePage';
 import MyPage from './MyPage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -101,7 +102,7 @@ class HomePage extends React.Component {
                         }}
                 >
                         <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
-                        <Tab.Screen name="趋势" component={TrendingPage} />
+                        <Tab.Screen name="趋势" component={TrendingStackNavigator} />
                         <Tab.Screen name="收藏" component={FavoritePage} />
                         <Tab.Screen name="我的" component={MyPage} />
                     </Tab.Navigator>
