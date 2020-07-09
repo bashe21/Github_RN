@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderColor: 'black',
         borderWidth: 1,
-        marginRight: 6,
+        marginRight: 10,
         height: 30,
     },
     input_container: {
@@ -29,14 +29,24 @@ export default class FetchDemoPage extends React.Component {
     loadData() {
         const url = `https://api.github.com/search/repositories?q=${this.searchKey}`;
         fetch(url)
-            .then((reponse) => reponse.text())
+            .then((response) => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Network request response is not ok');
+            })
             .then((jsonText) => {
                 this.setState({
                     showText: jsonText,
                 })
             })
-            .catch((error) => alert(error));
+            .catch((error) => {
+                this.setState({
+                    showText: error,
+                })
+            });
     }
+
     
     render() {
         return (
@@ -51,8 +61,8 @@ export default class FetchDemoPage extends React.Component {
                             }
                         }
                     />
-                    <Text>{this.state.showText}</Text>
                 </View>
+                <Text>{this.state.showText}</Text>
             </View>
         )
     }
