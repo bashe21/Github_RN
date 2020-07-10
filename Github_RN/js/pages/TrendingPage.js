@@ -52,6 +52,12 @@ class TrendingPage extends React.Component {
                         navigation.navigate('AsyncStorageDemo');
                     }
                 } />
+                <Button title="data storage demo" onPress={
+                    () => {
+                        const {navigation} = this.props;
+                        navigation.navigate('DataStorageDemo');
+                    }
+                } />
             </View>
         )
     }
