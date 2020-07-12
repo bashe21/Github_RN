@@ -44,7 +44,7 @@ export default function onAction(state=defaultState, action) {
                     hideLoadingMore: true,
                 }
             };
-        case Types.RENDING_REFRESH_FAIL:
+        case Types.TRENDING_REFRESH_FAIL:
             return {
                 ...state,
                 [action.storeName]: {
@@ -52,7 +52,7 @@ export default function onAction(state=defaultState, action) {
                     isLoading: false,
                 }
             };
-        case Types.RENDING_LOAD_MORE_SUCCESS: // 上拉加载成功
+        case Types.TRENDING_LOAD_MORE_SUCCESS: // 上拉加载成功
             return {
                 ...state,
                 [action.storeName]: {
@@ -62,7 +62,7 @@ export default function onAction(state=defaultState, action) {
                     pageIndex: action.pageIndex,
                 },
             };
-        case Types.RENDING_LOAD_MORE_FAIL: // 上拉加载失败
+        case Types.TRENDING_LOAD_MORE_FAIL: // 上拉加载失败
             return {
                 ...state,
                 [action.storeName]: {

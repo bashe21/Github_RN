@@ -7,6 +7,7 @@ import actions from '../actions/index';
 import PopularItem from '../public/PopularItem';
 import Toast from 'react-native-easy-toast'
 import NavigatorBar from '../public/NavigatorBar';
+import DeviceInfo from 'react-native-device-info';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        marginTop: 44,
+        marginTop: DeviceInfo.hasNotch() ? 44 : 20,
     },
 
     indicatorContainer: {

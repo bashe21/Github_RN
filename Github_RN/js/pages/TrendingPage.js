@@ -6,6 +6,7 @@ import actions from '../actions/index';
 import TrendingItem from '../public/TrendingItem';
 import Toast from 'react-native-easy-toast'
 import NavigatorBar from '../public/NavigatorBar';
+import DeviceInfo from 'react-native-device-info';
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        marginTop: 44,
+        marginTop: DeviceInfo.hasNotch() ? 44 : 20,
     },
 
     indicatorContainer: {
@@ -129,9 +130,10 @@ class TrendingTab extends React.Component {
                         console.log('----onEndReached----') //注意初始化的时候会被调用
                         setTimeout(() => { // 避免onEndReached比onMomentumScrollBegin先调用问题
                             if (this.canLoadMore) {
-                                this.loadData(true);
-                                this.canLoadMore = false;
+                                
                             }
+                            this.loadData(true);
+                            this.canLoadMore = false;
                         }, 100);
                         
                     }}
@@ -173,8 +175,8 @@ export default class TrendingPage extends React.Component {
 
     _screens(tabNames) {
         const tabs = [];
-        this.tabNames.forEach(name => {
-            tabs.push(<Tab.Screen name={name} component={TrendingTabPage} />);
+        this.tabNames.forEach((name, i) => {
+            tabs.push(<Tab.Screen name={name} component={TrendingTabPage} key={i}/>);
         });
         return tabs;
     }
