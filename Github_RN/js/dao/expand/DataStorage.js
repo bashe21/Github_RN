@@ -1,5 +1,6 @@
 import {AsyncStorage} from 'react-native';
 
+export const FLAG_STORAGE = {flag_popular: 'popular', flag_trending: 'trending'};
 export default class DataStore {
     // 保存数据
     savaData(url, data, callback) {
@@ -33,11 +34,13 @@ export default class DataStore {
     /* 
     获取网络数据
     @params url
+    @params flag
     @returns {Promise}
      */
-    fetchNetData(url) {
+    fetchNetData(url, flag) {
         return new Promise((resolve, reject) => {
-            fetch(url)
+            if (flag !== FLAG_STORAGE.flag_trending) {
+                fetch(url)
                 .then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -50,28 +53,44 @@ export default class DataStore {
                 .catch((error) => {
                     reject(error);
                 });
+            } else {
+                fetch(url)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok');
+                })
+                .then((responsData) => {
+                    this.savaData(url, responsData, resolve(responsData));
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+            }
         })
     }
 
     /*
     获取数据，优先获取本地数据，如果无本地数据或本地数据过期则获取网络数据
     @params url
+    @params flag
     @returns {Promise} 
      */
-    fetchData(url) {
+    fetchData(url, flag) {
         return new Promise((resolve, reject) => {
             this.fetchLoacalData(url).then((wrapData) => {
                 if (wrapData && DataStore.checktimestampValid(wrapData.timestamp)) {
                     resolve(wrapData);
                 } else {
-                    this.fetchNetData(url).then((data) => {
+                    this.fetchNetData(url, flag).then((data) => {
                         resolve(this._wrapData(data));
                     }).catch((error) => {
                         reject(error);
                     })
                 }
             }).catch((error) => {
-                this.fetchNetData(url).then((data) => {
+                this.fetchNetData(url, flag).then((data) => {
                     resolve(this._wrapData(data));
                 }).catch((error) => {
                     reject(error);

@@ -102,7 +102,7 @@ class HomePage extends React.Component {
                         }}
                 >
                         <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
-                        <Tab.Screen name="趋势" component={TrendingStackNavigator} />
+                        <Tab.Screen name="趋势" component={TrendingPage} />
                         <Tab.Screen name="收藏" component={FavoritePage} />
                         <Tab.Screen name="我的" component={MyPage} />
                     </Tab.Navigator>
