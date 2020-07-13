@@ -4,6 +4,7 @@ import NavigatorBar from '../public/NavigatorBar';
 import ViewUtils from '../util/ViewUtils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
+import NavigationUtils from '../util/NavigationUtils';
 
 const TRENDING_URL = 'https://github.com/';
 const THEME_COLOR = '#678';
@@ -11,7 +12,7 @@ const THEME_COLOR = '#678';
 export default class DetailPage extends React.Component {
     constructor(props) {
         super(props);
-        this.params = props.navigation.state.params;
+        this.params = props.navigation.params;
         const {projectMode} = this.params;
         this.url = projectMode.html_url || (TRENDING_URL + projectMode.fullName);
         const title = projectMode.full_name || projectMode.fullName;
@@ -25,7 +26,7 @@ export default class DetailPage extends React.Component {
         if (this.state.canGoBack) {
             this.webView.goBack();
         } else {
-
+            NavigationUtils.goBack(this.props.navigation);
         }
     }
 

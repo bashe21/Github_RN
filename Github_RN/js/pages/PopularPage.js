@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        marginTop: DeviceInfo.hasNotch() ? 44 : 20,
+        //marginTop: DeviceInfo.hasNotch() ? 44 : 20,
     },
 
     indicatorContainer: {
@@ -103,7 +103,10 @@ class PopularTab extends React.Component {
         return <PopularItem 
             item={item}
             onSelect={() => {
-
+                const {navigation} = this.props;
+                navigation.navigate('DetailPage', {
+                    projectMode: item,
+                })
             }}
         />
     }
@@ -206,9 +209,6 @@ export default class PopularPage extends React.Component {
                     
                 }
             }>
-                    {/* <Tab.Screen name="Tab1" component={PopularTab} />
-                    <Tab.Screen name="Tab2" component={PopularTab} /> */}
-                    {/* {console.log(this._screens.length)} */}
                     {this._screens(this.tabNames)}
                 </Tab.Navigator>
             </View>

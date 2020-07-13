@@ -3,6 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import {NavigationContainer, getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PopularPage from './PopularPage';
+import PopularNavigator from '../navigator/PopularNavigator';
 import TrendingPage from './TrendingPage';
 import TrendingStackNavigator from '../navigator/TrendingStackNavigator';
 import FavoritePage from './FavoritePage';
@@ -13,6 +14,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {ChangeStyleContext} from '../navigator/ChangeTheme';
 import {connect} from 'react-redux';
 import { exp } from 'react-native-reanimated';
+import DetailPage from '../pages/DetailPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -101,7 +103,7 @@ class HomePage extends React.Component {
                             inactiveTintColor: 'gray',
                         }}
                 >
-                        <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}}/>
+                        <Tab.Screen name="最热" component={PopularNavigator} options={{title: '最热'}}/>
                         <Tab.Screen name="趋势" component={TrendingPage} />
                         <Tab.Screen name="收藏" component={FavoritePage} />
                         <Tab.Screen name="我的" component={MyPage} />
