@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl} from 'react-native';
+import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity, DeviceEventEmitter} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {connect} from 'react-redux';
 import actions from '../actions/index';
@@ -7,10 +7,13 @@ import TrendingItem from '../public/TrendingItem';
 import Toast from 'react-native-easy-toast'
 import NavigatorBar from '../public/NavigatorBar';
 import DeviceInfo from 'react-native-device-info';
+import TrendingDiag, {TimeSpans} from '../public/TrendingDiag';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
 const THEME_COLOR = '#678';
+const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE';
 
 const styles = StyleSheet.create({
     container: {
@@ -48,10 +51,21 @@ class TrendingTab extends React.Component {
         super(props);
         const {name} = props.route;
         this.storeName = name;
+        this.timeSpan = props.timeSpan;
     }
 
     componentWillMount() {
         this.loadData(false);
+        this.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE, (timeSpan) => {
+            this.timeSpan = timeSpan;
+            this.loadData(false);
+        })
+    }
+
+    componentWillUnmount() {
+        if (this.timeSpanChangeListener) {
+            this.timeSpanChangeListener.remove();
+        }
     }
 
     loadData(loadMore) {
@@ -69,7 +83,7 @@ class TrendingTab extends React.Component {
     }
 
     genFetchUrl(key) {
-        return URL + QUERY_STR + `&lang=${key}`;
+        return URL + '?' + this.timeSpan.searchText + `&lang=${key}`;
     }
 
     genIndicator() {
@@ -171,14 +185,55 @@ export default class TrendingPage extends React.Component {
         super(props);
         this.tabNames = ['Swift','C++','C#','PHP', 'JavaScript'];
         this._screens;
+        this.state = {
+            timeSpan: TimeSpans[0],
+        }
     }
 
     _screens(tabNames) {
         const tabs = [];
+        if (this.tabs) return this.tabs;
         this.tabNames.forEach((name, i) => {
-            tabs.push(<Tab.Screen name={name} component={TrendingTabPage} key={i}/>);
+            tabs.push(<Tab.Screen name={name} component={(props) => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>} key={i} />);
         });
-        return tabs;
+        this.tabs = tabs;
+        return this.tabs;
+    }
+
+    renderTitleView() {
+        return (<View>
+            <TouchableOpacity
+                underlayColor = 'transparent'
+                onPress = {() => this.dialog.show()}
+            >
+                <View style = {{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style = {{fontSize: 18, color: '#ffffff', fontWeight: '400'}}>
+                        趋势  {this.state.timeSpan.showText}
+                    </Text>
+                    <MaterialIcons 
+                        name = {'arrow-drop-down'}
+                        size = {22}
+                        style = {{color: 'white'}}
+                    />
+                </View>
+                
+            </TouchableOpacity>
+        </View>);
+    }
+
+    onSelectTimeSpan(tab) {
+        this.dialog.dismiss();
+        this.setState({
+            timeSpan: tab,
+        })
+        DeviceEventEmitter.emit(EVENT_TYPE_TIME_SPAN_CHANGE, tab);
+    }
+
+    renderTrendingDiag() {
+        return <TrendingDiag
+            ref = {dialog => this.dialog = dialog}
+            onSelect = {tab => this.onSelectTimeSpan(tab)}
+        />
     }
 
     render() {
@@ -188,7 +243,7 @@ export default class TrendingPage extends React.Component {
         }
 
         let navigationBar = <NavigatorBar 
-            title = {"趋势"}
+            titleView = {this.renderTitleView()}
             statusBar = {statusBar}
             style = {{backgroundColor: THEME_COLOR}}
         />
@@ -203,11 +258,14 @@ export default class TrendingPage extends React.Component {
                         backgroundColor: 'gray',
                     },
                     scrollEnabled: true,
+                    activeTintColor: 'red',
+                    inactiveTintColor: 'black'
                     
-                }
-            }>
+                }}
+            >
                     {this._screens(this.tabNames)}
                 </Tab.Navigator>
+                {this.renderTrendingDiag()}
             </View>
             
         );
