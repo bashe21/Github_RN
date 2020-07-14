@@ -194,7 +194,7 @@ export default class TrendingPage extends React.Component {
         const tabs = [];
         if (this.tabs) return this.tabs;
         this.tabNames.forEach((name, i) => { // 优化：如果tab已经存在则不在渲染
-            tabs.push(<Tab.Screen name={name} component={(props) => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>} key={i} />);
+        tabs.push(<Tab.Screen name={name} key={i} >{props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>}</Tab.Screen>);
         });
         this.tabs = tabs;
         return this.tabs;
