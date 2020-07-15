@@ -8,10 +8,14 @@ import PopularItem from '../public/PopularItem';
 import Toast from 'react-native-easy-toast'
 import NavigatorBar from '../public/NavigatorBar';
 import DeviceInfo from 'react-native-device-info';
+import FavoriteDao from '../dao/expand/FavoriteDao';
+import {FLAG_STORAGE} from '../dao/expand/DataStorage';
+import FavoriteUtil from '../util/FavoriteUtil';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 const THEME_COLOR = '#678';
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 const styles = StyleSheet.create({
     container: {
@@ -60,11 +64,11 @@ class PopularTab extends React.Component {
         const store = this._store();
         const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
-            onLoadMorePopularData(this.storeName, ++store.pageIndex, pageSize, store.items, callback => {
+            onLoadMorePopularData(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了');
             });
         } else {
-            onLoadPopularData(this.storeName, url, pageSize);
+            onLoadPopularData(this.storeName, url, pageSize, favoriteDao);
         }
         
     }
@@ -101,12 +105,15 @@ class PopularTab extends React.Component {
     renderItem(data) {
         const item = data.item;
         return <PopularItem 
-            item={item}
+            projectModel = {item}
             onSelect={() => {
                 const {navigation} = this.props;
                 navigation.navigate('DetailPage', {
                     projectMode: item,
                 })
+            }}
+            onFavorite = {(item, isFavorite) => {
+                FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular);
             }}
         />
     }
@@ -118,7 +125,7 @@ class PopularTab extends React.Component {
                 <FlatList 
                     data = {store.projectModes}
                     renderItem = {data => this.renderItem(data)}
-                    keyExtractor = {item => "" + item.id}
+                    keyExtractor = {item => "" + item.item.id}
                     refreshControl = {
                         <RefreshControl 
                             title={'Loading'}
@@ -160,8 +167,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onLoadPopularData: (storeName, url) => dispatch(actions.onloadPopularData(storeName, url, pageSize)),
-    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, callback)),
+    onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
+    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
 });
 
 // 注意：connect只是个function，并不是非要放在export后面

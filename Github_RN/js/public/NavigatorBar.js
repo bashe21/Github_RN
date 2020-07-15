@@ -3,9 +3,10 @@ import {PropTypes} from 'prop-types';
 import { ViewPropTypes, Text, StatusBar, StyleSheet, View, Platform, TouchableOpacity} from 'react-native';
 import Featcher from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import DeviceInfo from 'react-native-device-info';
 
 
-const NAV_BAR_HEIGHT_IOS = 44; // 导航栏在iOS种的高度
+const NAV_BAR_HEIGHT_IOS = DeviceInfo.hasNotch() ? 68 : 44; // 导航栏在iOS种的高度
 const NAV_BAR_HEIGHT_ANDROID = 50; // 导航栏在android中的高度
 const STATUS_BAR_HEIGHT = 20; // 状态栏高度
 
@@ -114,7 +115,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
+        height: Platform.OS === 'ios' ?  NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID,
+        paddingTop: 20,
     },
 
     container: {
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 40,
         right: 40,
-        top: 0,
+        top: 20,
         bottom: 0,
     }
 })

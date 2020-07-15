@@ -1,10 +1,11 @@
 import React from 'react';
-import {TouchableOpacity, View, Text, StyleSheet, WebView} from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import NavigatorBar from '../public/NavigatorBar';
 import ViewUtils from '../util/ViewUtils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
 import NavigationUtils from '../util/NavigationUtils';
+import {WebView} from 'react-native-webview';
 
 const TRENDING_URL = 'https://github.com/';
 const THEME_COLOR = '#678';
@@ -12,10 +13,9 @@ const THEME_COLOR = '#678';
 export default class DetailPage extends React.Component {
     constructor(props) {
         super(props);
-        this.params = props.navigation.params;
-        const {projectMode} = this.params;
-        this.url = projectMode.html_url || (TRENDING_URL + projectMode.fullName);
-        const title = projectMode.full_name || projectMode.fullName;
+        const {projectMode} = props.route.params;
+        this.url = projectMode.html_url || projectMode.repo_link;
+        const title = projectMode.full_name || projectMode.repo;
         this.state = {
             title: title,
             url: this.url,
@@ -39,16 +39,17 @@ export default class DetailPage extends React.Component {
 
     renderRightButton(callback) {
         return (
-            <View style = {{flexDirection: 'row'}}>
+            <View>
                 <TouchableOpacity
                     onPress={() => {
 
                     }}
+                    style = {{flexDirection: 'row'}}
                 >
                     <FontAwesome 
                         name = {'star-o'}
                         size = {20}
-                        style = {{color: 'white', marginRight: 10}}
+                        style = {{color: 'white', marginRight: 15}}
                     />
                     {ViewUtils.getLeftShareButton(() => {
 
@@ -73,7 +74,7 @@ export default class DetailPage extends React.Component {
                 {navigatorBar}
                 <WebView 
                     ref = {webView => this.webView = webView}
-                    startInLoadState = {true}
+                    startInLoadingState = {true}
                     onNavigationStateChange = {e => this.onNavigationStateChange(e)}
                     source = {{uri: this.state.url}}
                 />
@@ -85,7 +86,7 @@ export default class DetailPage extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: DeviceInfo.hasNotch() ? 30 : 0,
+        //marginTop: DeviceInfo.hasNotch() ? 30 : 0,
     },
     
     

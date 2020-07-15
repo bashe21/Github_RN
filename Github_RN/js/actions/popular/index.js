@@ -1,14 +1,15 @@
 import Types from '../types';
 import DataStore, {FLAG_STORAGE} from '../../dao/expand/DataStorage';
-import {handlerData} from '../ActionUtil';
+import {handlerData, projectModels} from '../ActionUtil';
+import { max } from 'react-native-reanimated';
 
-export function onloadPopularData(storeName, url, pageSize) {
+export function onloadPopularData(storeName, url, pageSize, favoriteDao) {
     return dispatch => {
         dispatch({type: Types.POPULAR_REFRESH, storeName: storeName});
         let dataStore = new DataStore();
         dataStore.fetchData(url, FLAG_STORAGE.flag_popular) // 异步action与数据流
             .then((data) => {
-                handlerData(Types.POPULAR_REFRESH_SUCCESS ,dispatch, storeName, data, pageSize);
+                handlerData(Types.POPULAR_REFRESH_SUCCESS ,dispatch, storeName, data, pageSize, favoriteDao);
             })
             .catch((error) => {
                 console.log(error);
@@ -29,7 +30,7 @@ export function onloadPopularData(storeName, url, pageSize) {
 @params: dataArray 原始数据
 @callback: 回调函数，可以通过回调函数向页面通信 比如异常信息展示，没有更多等
 */
-export function onloadMorePopularData(storeName, pageIndex, pageSize, dataArray=[], callback) {
+export function onloadMorePopularData(storeName, pageIndex, pageSize, dataArray=[], favoriteDao, callback) {
     return (
         dispatch => {
             setTimeout(() => { // 模拟网络请求
@@ -47,12 +48,14 @@ export function onloadMorePopularData(storeName, pageIndex, pageSize, dataArray=
                 } else {
                     // 本次和载入的全部数据量
                     let max = pageIndex * pageSize >= dataArray.length ? dataArray.length : pageSize * pageIndex;
-                    dispatch({
-                        type: Types.POPULAR_LOAD_MORE_SUCCESS,
-                        storeName,
-                        pageIndex,
-                        projectModes: dataArray.slice(0, max),
-                    })    
+                    projectModels(dataArray.slice(0, max), favoriteDao, data => {
+                        dispatch({
+                            type: Types.POPULAR_LOAD_MORE_SUCCESS,
+                            storeName,
+                            pageIndex,
+                            projectModes: data,
+                        })
+                    });
                 }
             }, 500);
         }

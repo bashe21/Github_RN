@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        marginTop: DeviceInfo.hasNotch() ? 44 : 20,
+        //marginTop: DeviceInfo.hasNotch() ? 44 : 20,
     },
 
     indicatorContainer: {
@@ -116,7 +116,10 @@ class TrendingTab extends React.Component {
         return <TrendingItem 
             item={item}
             onSelect={() => {
-
+                const {navigation} = this.props;
+                navigation.navigate('DetailPage', {
+                    projectMode: item,
+                })
             }}
         />
     }

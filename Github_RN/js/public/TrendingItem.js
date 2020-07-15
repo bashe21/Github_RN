@@ -1,27 +1,29 @@
 import React from 'react';
 import {Text, TouchableOpacity, View, StyleSheet, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import BaseItem from './BaseItem';
 
-export default class TrendingItem extends React.Component {
+export default class TrendingItem extends BaseItem {
     
     render() {
-        const {item} = this.props;
+        const {projectModel} = this.props;
+        const {item} = projectModel;
         if (!item) return null;
 
-        let favoriteButton = 
-            <TouchableOpacity
-                style={{padding: 2}}
-                onPress={() => {
+        // let favoriteButton = 
+        //     <TouchableOpacity
+        //         style={{padding: 2}}
+        //         onPress={() => {
 
-                }}
-                underlayColor={'transparent'}
-            >
-                <FontAwesome 
-                    name={'star-o'}
-                    size={26}
-                    style={{color: 'red'}}
-                />
-            </TouchableOpacity>
+        //         }}
+        //         underlayColor={'transparent'}
+        //     >
+        //         <FontAwesome 
+        //             name={'star-o'}
+        //             size={26}
+        //             style={{color: 'red'}}
+        //         />
+        //     </TouchableOpacity>
 
         return (
             <TouchableOpacity onPress={this.props.onSelect}>
@@ -43,7 +45,8 @@ export default class TrendingItem extends React.Component {
                             <Text>Stars:</Text>
                             <Text>{item.stars}</Text>
                         </View>
-                        {favoriteButton}
+                        {/* {favoriteButton} */}
+                        {this._favoriteIcon()}
                     </View>
                 </View>
         </TouchableOpacity>
