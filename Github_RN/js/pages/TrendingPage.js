@@ -9,11 +9,15 @@ import NavigatorBar from '../public/NavigatorBar';
 import DeviceInfo from 'react-native-device-info';
 import TrendingDiag, {TimeSpans} from '../public/TrendingDiag';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import {FLAG_STORAGE} from '../dao/expand/DataStorage';
+import FavoriteUtil from '../util/FavoriteUtil';
+import FavoriteDao from '../dao/expand/FavoriteDao';
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
 const THEME_COLOR = '#678';
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE';
+const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending);
 
 const styles = StyleSheet.create({
     container: {
@@ -73,11 +77,11 @@ class TrendingTab extends React.Component {
         const store = this._store();
         const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
-            onloadMoreTrendingData(this.storeName, ++store.pageIndex, pageSize, store.items, callback => {
+            onloadMoreTrendingData(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了');
             });
         } else {
-            onloadTrendingData(this.storeName, url, pageSize);
+            onloadTrendingData(this.storeName, url, pageSize, favoriteDao);
         }
         
     }
@@ -114,12 +118,17 @@ class TrendingTab extends React.Component {
     renderItem(data) {
         const item = data.item;
         return <TrendingItem 
-            item={item}
-            onSelect={() => {
+            projectModel = {item}
+            onSelect={(callback) => {
                 const {navigation} = this.props;
                 navigation.navigate('DetailPage', {
                     projectMode: item,
+                    flag: FLAG_STORAGE.flag_trending,
+                    callback,
                 })
+            }}
+            onFavorite = {(item, isFavorite) => {
+                FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_trending);
             }}
         />
     }
@@ -174,8 +183,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onloadTrendingData: (storeName, url) => dispatch(actions.onloadTrendingData(storeName, url, pageSize)),
-    onloadMoreTrendingData: (storeName, pageIndex, pageSize, items, callback) => dispatch(actions.onloadMoreTrendingData(storeName, pageIndex, pageSize, items, callback)),
+    onloadTrendingData: (storeName, url) => dispatch(actions.onloadTrendingData(storeName, url, pageSize, favoriteDao)),
+    onloadMoreTrendingData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMoreTrendingData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
 });
 
 // 注意：connect只是个function，并不是非要放在export后面

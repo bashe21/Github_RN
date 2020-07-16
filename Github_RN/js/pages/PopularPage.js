@@ -106,10 +106,12 @@ class PopularTab extends React.Component {
         const item = data.item;
         return <PopularItem 
             projectModel = {item}
-            onSelect={() => {
+            onSelect={(callback) => {
                 const {navigation} = this.props;
                 navigation.navigate('DetailPage', {
                     projectMode: item,
+                    flag: FLAG_STORAGE.flag_popular,
+                    callback,
                 })
             }}
             onFavorite = {(item, isFavorite) => {

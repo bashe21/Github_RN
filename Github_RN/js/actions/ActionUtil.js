@@ -33,7 +33,7 @@ export async function projectModels(showItems, favoriteDao, callback) {
     }
     let projectModels = [];
     for (let i = 0; i < showItems.length; i++) {
-        projectModels.push(new ProjectModel(showItems[i], Utils.checkFavorite(showItems[i]), keys));
+        projectModels.push(new ProjectModel(showItems[i], Utils.checkFavorite(showItems[i], keys)));
     }
     if (typeof callback === 'function') {
         callback(projectModels);

@@ -4,12 +4,17 @@ export default class Utils {
     */
     static checkFavorite(item, keys = []) {
         if (!keys) return false;
-        for (let i = 0; len = keys.length; i++) {
-            let id = item.id ? item.id : item.fullName;
-            if (id.toString() === keys[i]) {
-                return true;
-            }
+        let id = item.id ? item.id : item.repo;
+        if (keys.indexOf(id.toString()) !== -1 || keys.indexOf(id) !== -1) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
+        // for (let i = 0; len = keys.length; i++) {
+        //     if (id.toString() === keys[i]) {
+        //         return true;
+        //     }
+        // }
+        // return false; // 这个方式不会进入到这里，不知道为啥！！！
     }
 }

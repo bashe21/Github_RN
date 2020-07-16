@@ -41,7 +41,13 @@ export default class BaseItem extends React.Component {
         })
     }
 
-    onPressFavorite(event) {
+    onItemClick() {
+        this.props.onSelect(isFavorite => {
+            this.setFavoriteState(isFavorite);
+        })
+    }
+
+    onPressFavorite() {
         this.setFavoriteState(!this.state.isFavorite);
         this.props.onFavorite(this.props.projectModel.item, !this.state.isFavorite);
     }
@@ -50,7 +56,9 @@ export default class BaseItem extends React.Component {
         return <TouchableOpacity
             style = {{padding: 6}}
             underlayColor = 'transparent'
-            onPress = {() => this.onPressFavorite()}
+            onPress = {() => {
+                this.onPressFavorite()
+            }}
         >
             <FontAwesome 
                 name = {this.state.isFavorite ? 'star' : 'star-o'}
