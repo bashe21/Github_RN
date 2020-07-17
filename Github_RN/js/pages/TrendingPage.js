@@ -12,6 +12,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 import FavoriteUtil from '../util/FavoriteUtil';
 import FavoriteDao from '../dao/expand/FavoriteDao';
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../util/EventTypes';
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
@@ -56,6 +58,7 @@ class TrendingTab extends React.Component {
         const {name} = props.route;
         this.storeName = name;
         this.timeSpan = props.timeSpan;
+        this.isFavoriteChange = false;
     }
 
     componentWillMount() {
@@ -66,20 +69,35 @@ class TrendingTab extends React.Component {
         })
     }
 
+    componentDidMount() {
+        EventBus.getInstance().addListener(EventTypes.favorite_change_trending, this.favorite_change_trending = (data) => {
+            this.isFavoriteChange = true;
+        });
+        EventBus.getInstance().addListener(EventTypes.tabPress, this.tabPress = data => {
+            if (this.isFavoriteChange) {
+                this.loadData(null, true);
+            }
+        });
+    }
+
     componentWillUnmount() {
+        EventBus.getInstance().removeListener(this.favorite_change_trending);
+        EventBus.getInstance().removeListener(this.tabPress);
         if (this.timeSpanChangeListener) {
             this.timeSpanChangeListener.remove();
         }
     }
 
-    loadData(loadMore) {
-        const {onloadTrendingData, onloadMoreTrendingData} = this.props;
+    loadData(loadMore, refreshFavorite) {
+        const {onloadTrendingData, onloadMoreTrendingData, onFlushTrendingFavorite} = this.props;
         const store = this._store();
         const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
             onloadMoreTrendingData(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了');
             });
+        }  else if (refreshFavorite) {
+            onFlushTrendingFavorite(this.storeName, store.pageIndex, pageSize, store.items, favoriteDao);
         } else {
             onloadTrendingData(this.storeName, url, pageSize, favoriteDao);
         }
@@ -185,6 +203,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onloadTrendingData: (storeName, url) => dispatch(actions.onloadTrendingData(storeName, url, pageSize, favoriteDao)),
     onloadMoreTrendingData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMoreTrendingData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
+    onFlushTrendingFavorite:(storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushTrendingFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
 });
 
 // 注意：connect只是个function，并不是非要放在export后面

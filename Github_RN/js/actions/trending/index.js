@@ -60,3 +60,18 @@ export function onloadMoreTrendingData(storeName, pageIndex, pageSize, dataArray
         }
     )
 }
+
+export function onFlushTrendingFavorite(storeName, pageIndex, pageSize, dataArray=[], favoriteDao) {
+    return dispatch => {
+        dispatch({type: Types.TRENDING_REFRESH, storeName: storeName});
+        let max = pageIndex * pageSize >= dataArray.length ? dataArray.length : pageSize * pageIndex;
+        projectModels(dataArray.slice(0, max), favoriteDao, data => {
+            dispatch({
+                type: Types.FLUSH_TRENDING_FAVORITE,
+                storeName,
+                pageIndex,
+                projectModes: data,
+            })
+        });
+    }
+}

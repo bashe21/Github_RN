@@ -26,13 +26,13 @@ export default class BaseItem extends React.Component {
         return null;
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.props.projectModel.isFavorite !== nextProps.projectModel.isFavorite) {
-    //         this.setState({
-    //             isFavorite: nextProps.projectModel.isFavorite,
-    //         })
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.projectModel.isFavorite !== nextProps.projectModel.isFavorite) {
+            this.setState({
+                isFavorite: nextProps.projectModel.isFavorite,
+            })
+        }
+    }
 
     setFavoriteState(isFavorite) {
         this.props.projectModel.isFavorite = isFavorite;

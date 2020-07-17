@@ -15,6 +15,8 @@ import {ChangeStyleContext} from '../navigator/ChangeTheme';
 import {connect} from 'react-redux';
 import { exp } from 'react-native-reanimated';
 import DetailPage from '../pages/DetailPage';
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../util/EventTypes';
 
 const Tab = createBottomTabNavigator();
 
@@ -101,10 +103,29 @@ class HomePage extends React.Component {
                             activeTintColor: this.props.theme,
                             inactiveTintColor: 'gray',
                         }}
+                        
                 >
-                        <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}} />
-                        <Tab.Screen name="趋势" component={TrendingPage} />
-                        <Tab.Screen name="收藏" component={FavoritePage} />
+                        <Tab.Screen name="最热" component={PopularPage} options={{title: '最热'}} listeners={({navigation, route}) => ({
+                            tabPress: e => {
+                                EventBus.getInstance().fireEvent(EventTypes.tabPress, {
+                                    
+                                });
+                            }
+                        })}/>
+                        <Tab.Screen name="趋势" component={TrendingPage} listeners={({navigation, route}) => ({
+                            tabPress: e => {
+                                EventBus.getInstance().fireEvent(EventTypes.tabPress, {
+                                    
+                                });
+                            }
+                        })}/>
+                        <Tab.Screen name="收藏" component={FavoritePage} listeners={({navigation, route}) => ({
+                            tabPress: e => {
+                                EventBus.getInstance().fireEvent(EventTypes.tabPress, {
+                                    
+                                });
+                            }
+                        })}/>
                         <Tab.Screen name="我的" component={MyPage} />
                     </Tab.Navigator>
             </ChangeStyleContext.Provider>

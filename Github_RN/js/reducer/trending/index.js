@@ -44,6 +44,15 @@ export default function onAction(state=defaultState, action) {
                     hideLoadingMore: true,
                 }
             };
+        case Types.FLUSH_TRENDING_FAVORITE:
+            return {
+                ...state,
+                [action.storeName]: {
+                    ...state[action.storeName],
+                    isLoading: false,
+                    projectModes: action.projectModes,
+                }
+            };
         case Types.TRENDING_REFRESH_FAIL:
             return {
                 ...state,

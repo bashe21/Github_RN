@@ -11,6 +11,8 @@ import DeviceInfo from 'react-native-device-info';
 import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 import FavoriteUtil from '../util/FavoriteUtil';
+import EventBus from 'react-native-event-bus';
+import EventTypes from '../util/EventTypes';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -53,20 +55,39 @@ class PopularTab extends React.Component {
         super(props);
         const {name} = props.route;
         this.storeName = name;
+        this.isFavoriteChange = false;
     }
 
     componentWillMount() {
         this.loadData(false);
     }
 
-    loadData(loadMore) {
-        const {onLoadPopularData, onLoadMorePopularData} = this.props;
+    componentDidMount() {
+        EventBus.getInstance().addListener(EventTypes.favorite_change_popular, this.favorite_change_popular = (data) => {
+            this.isFavoriteChange = true;
+        });
+        EventBus.getInstance().addListener(EventTypes.tabPress, this.tabPress = data => {
+            if (this.isFavoriteChange) {
+                this.loadData(null, true);
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        EventBus.getInstance().removeListener(this.favorite_change_popular);
+        EventBus.getInstance().removeListener(this.tabPress);
+    }
+
+    loadData(loadMore, refreshFavorite) {
+        const {onLoadPopularData, onLoadMorePopularData, onFlushPopularFavorite} = this.props;
         const store = this._store();
         const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
             onLoadMorePopularData(this.storeName, ++store.pageIndex, pageSize, store.items, favoriteDao, callback => {
                 this.refs.toast.show('没有更多了');
             });
+        } else if (refreshFavorite) {
+            onFlushPopularFavorite(this.storeName, store.pageIndex, pageSize, store.items, favoriteDao);
         } else {
             onLoadPopularData(this.storeName, url, pageSize, favoriteDao);
         }
@@ -171,6 +192,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
     onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
+    onFlushPopularFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushPopularFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
 });
 
 // 注意：connect只是个function，并不是非要放在export后面
