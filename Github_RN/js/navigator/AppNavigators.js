@@ -4,6 +4,9 @@ import {createStackNavigator, HeaderTitle} from '@react-navigation/stack';
 import WelcomePage from '../pages/WelcomePage';
 import HomePage from '../pages/HomePage';
 import DetailPage from '../pages/DetailPage';
+import WebViewPage from '../pages/WebViewPage';
+import AboutPage from '../pages/about/AboutPage';
+import AboutMePage from '../pages/about/AboutMePage';
 
 const Stack = createStackNavigator();
 const AuthContext = createContext();
@@ -51,6 +54,9 @@ function AppNavigators() {
     const mainScreens = [
         <Stack.Screen name = 'Homepage' component = {HomePage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'DetailPage' component = {DetailPage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'WebViewPage' component = {WebViewPage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'AboutPage' component = {AboutPage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'AboutMePage' component = {AboutMePage} options = {{headerShown: false}}/>,
     ]
     
 

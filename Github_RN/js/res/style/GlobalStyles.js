@@ -1,3 +1,5 @@
+import DeviceInfo from 'react-native-device-info';
+
 const BACKGROUND_COLOR = '#f3f3f4';
 
 export default {
@@ -9,5 +11,9 @@ export default {
     root_container: {
         flex: 1,
         backgroundColor: BACKGROUND_COLOR,
-    }
+    },
+    backgroundColor: BACKGROUND_COLOR,
+    nav_bar_height_ios: DeviceInfo.hasNotch() ? 64 : 44,
+    nav_bar_height_android: 50,
+
 }

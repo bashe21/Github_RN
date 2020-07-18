@@ -6,6 +6,6 @@ export default class NavigationUtils extends React.Component {
     }
 
     static goPage(navigation, routeName, params) {
-        
+        navigation.navigate(routeName, params);
     }
 }

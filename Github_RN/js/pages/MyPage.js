@@ -4,9 +4,10 @@ import Featcher from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigatorBar from '../public/NavigatorBar';
 import {MoreMenu} from '../public/MoreMenu';
-import GlobalStyles from '../res/GlobalStyles';
+import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtils from '../util/ViewUtils';
 import { color } from 'react-native-reanimated';
+import NavigationUtils from '../util/NavigationUtils';
 
 const THEME_COLOR = '#678';
 
@@ -69,7 +70,28 @@ export default class MyPage extends React.Component {
     }
 
     onClick(menu) {
-
+        const {navigation} = this.props;
+        let routeName, params = {};
+        switch(menu) {
+            case MoreMenu.Tutorial:
+                routeName = 'WebViewPage';
+                params = {
+                    url: 'https://coding.m.imooc.com/classindex.html?cid=89',
+                    title: '教程',
+                }
+                break;
+            case MoreMenu.About:
+                routeName = 'AboutPage';
+                break;
+            case MoreMenu.About_Author:
+                routeName = 'AboutMePage';
+                params
+                break;
+        }
+        if (routeName) {
+            NavigationUtils.goPage(navigation, routeName, params);
+        }
+        
     }
 
     getItem(menu) {
