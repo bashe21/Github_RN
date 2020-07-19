@@ -7,6 +7,7 @@ import DetailPage from '../pages/DetailPage';
 import WebViewPage from '../pages/WebViewPage';
 import AboutPage from '../pages/about/AboutPage';
 import AboutMePage from '../pages/about/AboutMePage';
+import CustomKeyPage from '../pages/CustomKeyPage';
 
 const Stack = createStackNavigator();
 const AuthContext = createContext();
@@ -57,6 +58,7 @@ function AppNavigators() {
         <Stack.Screen name = 'WebViewPage' component = {WebViewPage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'AboutPage' component = {AboutPage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'AboutMePage' component = {AboutMePage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'CustomKeyPage' component = {CustomKeyPage} options = {{headerShown: false}}/>,
     ]
     
 

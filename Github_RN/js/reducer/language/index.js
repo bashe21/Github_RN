@@ -9,7 +9,7 @@ const defaultState = {
 export default function onAction(state = defaultState, action) {
     switch (action.type) {
         case Types.LANGUAGE_LOAD_SUCCESS: // 获取数据成功
-            if (FLAG_LANGUAGE.flag_language === action.flag) {
+            if (FLAG_LANGUAGE.flag_key === action.flag) {
                 return ({
                     ...state,
                     keys: action.languages,

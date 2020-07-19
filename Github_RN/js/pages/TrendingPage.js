@@ -14,6 +14,8 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import FavoriteDao from '../dao/expand/FavoriteDao';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
+import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
+import ArrayUtil from '../util/ArrayUtil';
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
@@ -211,23 +213,34 @@ const TrendingTabPage = connect(mapStateToProps, mapDispatchToProps)(TrendingTab
 
 const Tab = createMaterialTopTabNavigator();
 
-export default class TrendingPage extends React.Component {
+class TrendingPage extends React.Component {
     constructor(props) {
         super(props);
-        this.tabNames = ['Swift','C++','C#','PHP', 'JavaScript'];
-        this._screens;
+        //this.tabNames = ['Swift','C++','C#','PHP', 'JavaScript'];
         this.state = {
             timeSpan: TimeSpans[0],
         }
+        this.prekeys = [];
     }
 
-    _screens(tabNames) {
-        const tabs = [];
-        if (this.tabs) return this.tabs;
-        this.tabNames.forEach((name, i) => { // 优化：如果tab已经存在则不在渲染
-        tabs.push(<Tab.Screen name={name} key={i} >{props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>}</Tab.Screen>);
-        });
-        this.tabs = tabs;
+    componentDidMount() {
+        const {onLoadLanguage} = this.props;
+        onLoadLanguage(FLAG_LANGUAGE.flag_language);
+    }
+
+    _screens() {
+        const {keys} = this.props;
+        if (!this.tab || !ArrayUtil.isEqual(this.prekeys, keys)) {
+            const tabs = [];
+            this.prekeys = keys;
+            keys.forEach((item, index) => { // 优化：如果tab已经存在则不在渲染
+                if (item.checked) {
+                    tabs.push(<Tab.Screen name={item.name} key={index} >{props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>}</Tab.Screen>);
+                }
+            });
+            this.tabs = tabs;
+        }
+        
         return this.tabs;
     }
 
@@ -268,6 +281,8 @@ export default class TrendingPage extends React.Component {
     }
 
     render() {
+        const {keys} = this.props;
+
         let statusBar = {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content',
@@ -279,10 +294,8 @@ export default class TrendingPage extends React.Component {
             style = {{backgroundColor: THEME_COLOR}}
         />
 
-        return (
-            <View style={styles.tab}>
-                {navigationBar}
-                <Tab.Navigator tabBarOptions={
+        const TabNavigator = keys.length > 0 ? (
+            <Tab.Navigator tabBarOptions={
                 {
                     tabStyle:{
                         width: 200,
@@ -294,11 +307,26 @@ export default class TrendingPage extends React.Component {
                     
                 }}
             >
-                    {this._screens(this.tabNames)}
+                    {this._screens()}
                 </Tab.Navigator>
+            ) : null;
+
+        return (
+            <View style={styles.tab}>
+                {navigationBar}
+                {TabNavigator}
                 {this.renderTrendingDiag()}
             </View>
             
         );
     }
 }
+const mapTrendingStateToProps = state => ({
+    keys: state.language.languages,
+});
+
+const mapTrendingDispatchToProps = dispatch => ({
+    onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+});
+
+export default connect(mapTrendingStateToProps, mapTrendingDispatchToProps)(TrendingPage);

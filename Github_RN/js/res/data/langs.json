@@ -14,12 +14,12 @@
     "path": "as3",
     "name": "ActionScript",
     "short_name": "AS",
-    "checked": true
+    "checked": false
   },
   {
     "path": "apacheconf",
     "name": "ApacheConf",
-    "checked": true
+    "checked": false
   },
   {
     "path": "nasm",
@@ -36,7 +36,7 @@
   {
     "path": "c",
     "name": "C",
-    "checked": false
+    "checked": true
   },
   {
     "path": "csharp",
@@ -150,7 +150,7 @@
   {
     "path": "java",
     "name": "Java",
-    "checked": false
+    "checked": true
   },
   {
     "path": "javascript",

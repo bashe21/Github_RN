@@ -8,6 +8,7 @@ import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtils from '../util/ViewUtils';
 import { color } from 'react-native-reanimated';
 import NavigationUtils from '../util/NavigationUtils';
+import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 
 const THEME_COLOR = '#678';
 
@@ -82,6 +83,13 @@ export default class MyPage extends React.Component {
                 break;
             case MoreMenu.About:
                 routeName = 'AboutPage';
+                break;
+            case MoreMenu.Custom_Key:
+            case MoreMenu.Custom_Language:
+            case MoreMenu.Remove_Key:
+                routeName = 'CustomKeyPage';
+                params.isRemoveKey = menu === MoreMenu.Remove_Key;
+                params.flag = menu !== MoreMenu.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
                 break;
             case MoreMenu.About_Author:
                 routeName = 'AboutMePage';

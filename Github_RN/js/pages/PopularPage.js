@@ -51,19 +51,6 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = state => ({
-    popular: state.popular,
-});
-
-const mapDispatchToProps = dispatch => ({
-    onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
-    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
-    onFlushPopularFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushPopularFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
-});
-
-// 注意：connect只是个function，并不是非要放在export后面
-const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
-
 const pageSize = 10; // 设置常量，防止修改
 class PopularTab extends React.Component {
     constructor(props) {
@@ -200,35 +187,46 @@ class PopularTab extends React.Component {
     }
 }
 
-const mapPopularStateProps = state => ({
-    keys: state.languages.keys,
+const mapStateToProps = state => ({
+    popular: state.popular,
 });
 
-const mapPopularDispatchToProps = dispatch => ({
-    onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+const mapDispatchToProps = dispatch => ({
+    onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
+    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
+    onFlushPopularFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushPopularFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
 });
 
-export default connect(mapPopularStateProps, mapPopularDispatchToProps)(PopularPage);
+// 注意：connect只是个function，并不是非要放在export后面
+const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
 
 const Tab = createMaterialTopTabNavigator();
 class PopularPage extends React.Component {
     constructor(props) {
         super(props);
-        this.tabNames = ['Java','Android','iOS','React', 'React-Native', 'PHP'];
-        const {onLoadLanguage} = this.props;
-        onlanguagechange(FLAG_LANGUAGE.flag_key);
+        //this.tabNames = ['Java','Android','iOS','React', 'React-Native', 'PHP'];
     }
 
-    _screens(tabNames) {
+    componentDidMount() {
+        const {onLoadLanguage} = this.props;
+        onLoadLanguage(FLAG_LANGUAGE.flag_key);
+    }
+
+    _screens() {
         const tabs = [];
         const {keys} = this.props;
-        keys.forEach(name => {
-            tabs.push(<Tab.Screen name={name} component={PopularTabPage} />);
+        keys.forEach((item, index) => {
+            if (item.checked) {
+                tabs.push(<Tab.Screen name={item.name} component={PopularTabPage} key={index}/>);
+            }
+            
         });
         return tabs;
     }
 
     render() {
+        const {keys} = this.props;
+
         let statusBar = {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content',
@@ -240,23 +238,36 @@ class PopularPage extends React.Component {
             style = {{backgroundColor: THEME_COLOR}}
         />
 
+        const TabNavigator = keys.length > 0 ? (
+        <Tab.Navigator tabBarOptions={
+            {
+                tabStyle:{
+                    width: 200,
+                    backgroundColor: 'gray',
+                },
+                scrollEnabled: true,
+                
+            }
+        }>
+                {this._screens()}
+            </Tab.Navigator>) : null;
+
         return (
             <View style={styles.tab}>
                 {navigationBar}
-                <Tab.Navigator tabBarOptions={
-                {
-                    tabStyle:{
-                        width: 200,
-                        backgroundColor: 'gray',
-                    },
-                    scrollEnabled: true,
-                    
-                }
-            }>
-                    {this._screens(this.tabNames)}
-                </Tab.Navigator>
+                {TabNavigator}
             </View>
             
         );
     }
 }
+
+const mapPopularStateToProps = state => ({
+    keys: state.language.keys,
+});
+
+const mapPopularDispatchToProps = dispatch => ({
+    onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+});
+
+export default connect(mapPopularStateToProps, mapPopularDispatchToProps)(PopularPage);
