@@ -13,6 +13,7 @@ import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
+import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -49,6 +50,20 @@ const styles = StyleSheet.create({
         margin: 10,
     }
 })
+
+const mapStateToProps = state => ({
+    popular: state.popular,
+});
+
+const mapDispatchToProps = dispatch => ({
+    onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
+    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
+    onFlushPopularFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushPopularFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
+});
+
+// 注意：connect只是个function，并不是非要放在export后面
+const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
+
 const pageSize = 10; // 设置常量，防止修改
 class PopularTab extends React.Component {
     constructor(props) {
@@ -185,31 +200,29 @@ class PopularTab extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    popular: state.popular,
+const mapPopularStateProps = state => ({
+    keys: state.languages.keys,
 });
 
-const mapDispatchToProps = dispatch => ({
-    onLoadPopularData: (storeName, url, pageSize, favoriteDao) => dispatch(actions.onloadPopularData(storeName, url, pageSize, favoriteDao)),
-    onLoadMorePopularData: (storeName, pageIndex, pageSize, items, favoriteDao, callback) => dispatch(actions.onloadMorePopularData(storeName, pageIndex, pageSize, items, favoriteDao, callback)),
-    onFlushPopularFavorite: (storeName, pageIndex, pageSize, items, favoriteDao) => dispatch(actions.onFlushPopularFavorite(storeName, pageIndex, pageSize, items, favoriteDao)),
+const mapPopularDispatchToProps = dispatch => ({
+    onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
 });
 
-// 注意：connect只是个function，并不是非要放在export后面
-const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
+export default connect(mapPopularStateProps, mapPopularDispatchToProps)(PopularPage);
 
 const Tab = createMaterialTopTabNavigator();
-
-export default class PopularPage extends React.Component {
+class PopularPage extends React.Component {
     constructor(props) {
         super(props);
         this.tabNames = ['Java','Android','iOS','React', 'React-Native', 'PHP'];
-        this._screens;
+        const {onLoadLanguage} = this.props;
+        onlanguagechange(FLAG_LANGUAGE.flag_key);
     }
 
     _screens(tabNames) {
         const tabs = [];
-        this.tabNames.forEach(name => {
+        const {keys} = this.props;
+        keys.forEach(name => {
             tabs.push(<Tab.Screen name={name} component={PopularTabPage} />);
         });
         return tabs;
