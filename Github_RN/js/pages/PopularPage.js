@@ -240,15 +240,17 @@ class PopularPage extends React.Component {
 
         const TabNavigator = keys.length > 0 ? (
         <Tab.Navigator tabBarOptions={
-            {
-                tabStyle:{
-                    width: 200,
-                    backgroundColor: 'gray',
-                },
-                scrollEnabled: true,
-                
+                {
+                    tabStyle:{
+                        width: 200,
+                        backgroundColor: 'gray',
+                    },
+                    scrollEnabled: true,
+                    
+                }
             }
-        }>
+            lazy = {true}
+        >
                 {this._screens()}
             </Tab.Navigator>) : null;
 

@@ -84,12 +84,20 @@ export default class MyPage extends React.Component {
             case MoreMenu.About:
                 routeName = 'AboutPage';
                 break;
+            case MoreMenu.Sort_Key:
+                routeName = 'SortKeyPage';
+                params.flag = FLAG_LANGUAGE.flag_key;
+                break;
+            case MoreMenu.Sort_Language:
+                routeName = 'SortKeyPage';
+                params.flag = FLAG_LANGUAGE.flag_language;
+                break;
             case MoreMenu.Custom_Key:
             case MoreMenu.Custom_Language:
             case MoreMenu.Remove_Key:
                 routeName = 'CustomKeyPage';
                 params.isRemoveKey = menu === MoreMenu.Remove_Key;
-                params.flag = menu !== MoreMenu.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language;
+                params.flag = (menu !== MoreMenu.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language);
                 break;
             case MoreMenu.About_Author:
                 routeName = 'AboutMePage';

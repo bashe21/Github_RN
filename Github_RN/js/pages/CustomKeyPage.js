@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, ScrollView} from 'react-native';
+import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, ScrollView, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {connect} from 'react-redux';
@@ -19,6 +19,7 @@ import ViewUtils from '../util/ViewUtils';
 import CheckBox from 'react-native-check-box'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigationUtils from '../util/NavigationUtils';
+import ArrayUtil from '../util/ArrayUtil';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -33,7 +34,7 @@ class CustomKeyPage extends React.Component {
         this.params = this.props.route.params;
         this.backPress = new BackPressComponent((e) => this.onBackPress(e));
         this.changeValues = [];
-        this.isRemoveKey = !this.params.isRemoveKey;
+        this.isRemoveKey = this.params.isRemoveKey;
         this.languageDao = new LanguageDao(this.params.flag);
         this.state = {
             keys: [],
@@ -87,9 +88,15 @@ class CustomKeyPage extends React.Component {
     */
     static _keys(props, original, state) {
         const {flag, isRemoveKey} = props.route.params;
-        let key = flag === FLAG_LANGUAGE.flag_key ? 'keys' : 'languages';
-        if (isRemoveKey && !original) {
-
+        let key = (flag === FLAG_LANGUAGE.flag_key ? 'keys' : 'languages');
+        if (isRemoveKey && !original) { 
+            // 如果state中的keys为空则从props中取
+            return state && state.keys && state.keyes.length !== 0 || props.language[key].map(val => {
+                return { // 注意不能直接改props，copy一份
+                    ...val,
+                    checked: false,
+                }
+            })
         } else {
             return props.language[key];
         }
@@ -97,12 +104,47 @@ class CustomKeyPage extends React.Component {
 
 
     onSave() {
+        const {navigation} = this.props;
+        if (this.changeValues.length === 0) {
+            NavigationUtils.goBack(navigation);
+            return;
+        }
 
+        let keys;
+        if (this.isRemoveKey) { // 如果是标签的特殊处理
+            for (let i = 0, l = this.changeValues.length; i < l; i++) {
+                ArrayUtil.remove(keys = CustomKeyPage._keys(this.props, true), this.changeValues[i], 'name');
+            }
+        }
+        
+        // 更新本地数据
+        this.languageDao.save(keys || this.state.keys);
+        const {onLoadLanguage} = this.props;
+        // 更新store
+        onLoadLanguage(this.params.flag);
+        NavigationUtils.goBack(navigation);
     }
 
     onBack() {
         const {navigation} = this.props;
-        NavigationUtils.goBack(navigation);
+        if (this.changeValues.length > 0) {
+            Alert.alert('提示', '要保存修改吗?',[
+                {
+                    text: '否', 
+                    onPress: () => {
+                        NavigationUtils.goBack(navigation);
+                    }
+                },
+                {
+                    text: '是',
+                    onPress: () => {
+                        this.onSave();
+                    }
+                }
+            ])
+        } else {
+            NavigationUtils.goBack(navigation);
+        }
     }
 
     renderView() {
@@ -125,16 +167,12 @@ class CustomKeyPage extends React.Component {
     }
 
     onClick(data, index) {
-        const {theme} = {theme} = this.params;
-        return (
-            <Ionicons 
-                name = {checked ? 'ios-checkbox' : 'md-square-outline'}
-                size = {20}
-                style = {{
-                    color: THEME_COLOR,
-                }}
-            />
-        );
+        data.checked = !data.checked;
+        ArrayUtil.updataArray(this.changeValues, data);
+        this.state.keys[index] = data; // 更新state以便显示
+        this.setState({
+            keys: this.state.keys,
+        })
     }
 
     _checkedImage(checked) {
@@ -145,7 +183,7 @@ class CustomKeyPage extends React.Component {
         return <CheckBox
             style={{flex: 1, padding: 10}}
             onClick={()=>this.onClick(data, index)}
-            isChecked={this.state.isChecked}
+            isChecked={data.checked}
             leftText={data.name}
             checkedImage = {this._checkedImage(true)}
             unCheckedImage = {this._checkedImage(false)}
@@ -154,7 +192,9 @@ class CustomKeyPage extends React.Component {
 
     render() {
         let title = this.isRemoveKey ? '标签移除' : '自定义标签';
-        title = this.params.flag === FLAG_LANGUAGE.flag_language ? '自定义语言' : title;
+        title = (this.params.flag === FLAG_LANGUAGE.flag_language ? '自定义语言' : title);
+        let rightButtonTitle = this.isRemoveKey ? '移除' : '保存';
+
         let statusBar = {
             backgroundColor: THEME_COLOR,
             barStyle: 'light-content',
@@ -164,7 +204,7 @@ class CustomKeyPage extends React.Component {
             title = {title}
             statusBar = {statusBar}
             style = {{backgroundColor: THEME_COLOR}}
-            rightButton = {ViewUtils.getRightButton(title, () => this.onSave())}
+            rightButton = {ViewUtils.getRightButton(rightButtonTitle, () => this.onSave())}
             leftButton = {ViewUtils.getLeftBackButton(() => this.onBack())}
         />
 
@@ -179,15 +219,15 @@ class CustomKeyPage extends React.Component {
     }
 }
 
-const mapPopularStateToProps = state => ({
+const mapCustomKeyStateToProps = state => ({
     language: state.language,
 });
 
-const mapPopularDispatchToProps = dispatch => ({
+const mapCustomKeyDispatchToProps = dispatch => ({
     onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
 });
 
-export default connect(mapPopularStateToProps, mapPopularDispatchToProps)(CustomKeyPage);
+export default connect(mapCustomKeyStateToProps, mapCustomKeyDispatchToProps)(CustomKeyPage);
 
 
 const styles = StyleSheet.create({

@@ -20,6 +20,7 @@
     "react-native": "0.62.2",
     "react-native-check-box": "^2.1.7",
     "react-native-device-info": "^5.6.2",
+    "react-native-drag-sort": "^2.2.4",
     "react-native-easy-toast": "^1.2.0",
     "react-native-event-bus": "^1.0.0",
     "react-native-gesture-handler": "^1.6.1",

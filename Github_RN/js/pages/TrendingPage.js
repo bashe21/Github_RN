@@ -306,6 +306,7 @@ class TrendingPage extends React.Component {
                     inactiveTintColor: 'black'
                     
                 }}
+                lazy = {true}
             >
                     {this._screens()}
                 </Tab.Navigator>
