@@ -10,7 +10,6 @@ import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 
 const TRENDING_URL = 'https://github.com/';
-const THEME_COLOR = '#678';
 
 export default class DetailPage extends React.Component {
     constructor(props) {
@@ -20,6 +19,7 @@ export default class DetailPage extends React.Component {
         this.favoriteDao = favoriteDao;
         this.url = projectMode.item.html_url || projectMode.item.repo_link;
         const title = projectMode.item.full_name || projectMode.item.repo;
+        this.theme = props.route.params.theme;
         this.state = {
             title: title,
             url: this.url,
@@ -81,7 +81,7 @@ export default class DetailPage extends React.Component {
         let navigatorBar = <NavigatorBar 
             title = {this.state.title}
             leftButton = {ViewUtils.getLeftBackButton(() => this.onBack())}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {this.theme.styles.navBar}
             rightButton = {this.renderRightButton(() => {
 
             })}

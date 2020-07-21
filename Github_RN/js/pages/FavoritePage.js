@@ -19,7 +19,7 @@ import EventTypes from '../util/EventTypes';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
-const THEME_COLOR = '#678';
+
 //const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 const styles = StyleSheet.create({
@@ -108,6 +108,7 @@ class FavoriteTab extends React.Component {
 
     renderItem(data) {
         const item = data.item;
+        const {theme} = this.props;
         const Item = this.storeName === FLAG_STORAGE.flag_popular ? PopularItem : TrendingItem;
         return <Item 
             projectModel = {item}
@@ -117,6 +118,7 @@ class FavoriteTab extends React.Component {
                     projectMode: item,
                     flag: this.storeName,
                     callback,
+                    theme,
                 })
             }}
             onFavorite = {(item, isFavorite) => {
@@ -127,6 +129,7 @@ class FavoriteTab extends React.Component {
 
     render() {
         let store = this._store();
+        const {theme} = this.props;
         return (
             <View>
                 <FlatList 
@@ -136,11 +139,11 @@ class FavoriteTab extends React.Component {
                     refreshControl = {
                         <RefreshControl 
                             title={'Loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[{THEME_COLOR}]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => this.loadData(true)}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                 />
@@ -166,7 +169,7 @@ const FavoriteTabPage = connect(mapStateToProps, mapDispatchToProps)(FavoriteTab
 
 const Tab = createMaterialTopTabNavigator();
 
-export default class FavoritePage extends React.Component {
+class FavoritePage extends React.Component {
     constructor(props) {
         super(props);
         this.tabNames = ['最热','趋势'];
@@ -176,22 +179,25 @@ export default class FavoritePage extends React.Component {
 
     _screens(tabNames) {
         const tabs = [];
+        const {theme} = this.props;
         this.tabNames.forEach((name, index) => {
-            tabs.push(<Tab.Screen name={name}>{(props) => <FavoriteTabPage {...props} flag = {this.flags[index]}/>}</Tab.Screen>);
+            tabs.push(<Tab.Screen name={name}>{(props) => <FavoriteTabPage {...props} flag = {this.flags[index]} theme={theme}/>}</Tab.Screen>);
         });
         return tabs;
     }
 
     render() {
+        const {theme} = this.props;
+
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            style: theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             title = {"收藏"}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {theme.styles.navBar}
         />
 
         return (
@@ -214,3 +220,9 @@ export default class FavoritePage extends React.Component {
         );
     }
 }
+
+const mapFavoriteStateToProps = state => ({
+    theme: state.theme.theme,
+});
+
+export default connect(mapFavoriteStateToProps)(FavoritePage);

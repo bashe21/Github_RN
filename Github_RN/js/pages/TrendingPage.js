@@ -137,6 +137,7 @@ class TrendingTab extends React.Component {
 
     renderItem(data) {
         const item = data.item;
+        const {theme} = this.props;
         return <TrendingItem 
             projectModel = {item}
             onSelect={(callback) => {
@@ -145,6 +146,7 @@ class TrendingTab extends React.Component {
                     projectMode: item,
                     flag: FLAG_STORAGE.flag_trending,
                     callback,
+                    theme,
                 })
             }}
             onFavorite = {(item, isFavorite) => {
@@ -155,6 +157,7 @@ class TrendingTab extends React.Component {
 
     render() {
         let store = this._store();
+        const {theme} = this.props;
         return (
             <View>
                 <FlatList 
@@ -164,11 +167,11 @@ class TrendingTab extends React.Component {
                     refreshControl = {
                         <RefreshControl 
                             title={'Loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[{THEME_COLOR}]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => this.loadData(false)}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                     ListFooterComponent={() => this.genIndicator()}
@@ -229,13 +232,13 @@ class TrendingPage extends React.Component {
     }
 
     _screens() {
-        const {keys} = this.props;
+        const {keys, theme} = this.props;
         if (!this.tab || !ArrayUtil.isEqual(this.prekeys, keys)) {
             const tabs = [];
             this.prekeys = keys;
             keys.forEach((item, index) => { // 优化：如果tab已经存在则不在渲染
                 if (item.checked) {
-                    tabs.push(<Tab.Screen name={item.name} key={index} >{props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan}/>}</Tab.Screen>);
+                    tabs.push(<Tab.Screen name={item.name} key={index} >{props => <TrendingTabPage {...props} timeSpan={this.state.timeSpan} theme={theme}/>}</Tab.Screen>);
                 }
             });
             this.tabs = tabs;
@@ -281,17 +284,17 @@ class TrendingPage extends React.Component {
     }
 
     render() {
-        const {keys} = this.props;
+        const {keys, theme} = this.props;
 
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            styles: theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             titleView = {this.renderTitleView()}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {theme.styles.navBar}
         />
 
         const TabNavigator = keys.length > 0 ? (
@@ -324,6 +327,7 @@ class TrendingPage extends React.Component {
 }
 const mapTrendingStateToProps = state => ({
     keys: state.language.languages,
+    theme: state.theme.theme,
 });
 
 const mapTrendingDispatchToProps = dispatch => ({

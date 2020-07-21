@@ -100,7 +100,7 @@ class HomePage extends React.Component {
                         tabBarOptions={{
                             // activeTintColor: this.state.style.activeTintColor,
                             // inactiveTintColor: this.state.style.inactiveTintColor,
-                            activeTintColor: this.props.theme,
+                            activeTintColor: this.props.theme.themeColor,
                             inactiveTintColor: 'gray',
                         }}
                         

@@ -8,10 +8,11 @@ import NavigationUtils from '../util/NavigationUtils';
 import {WebView} from 'react-native-webview';
 import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
+import {connect} from 'react-redux';
 
 const THEME_COLOR = '#678';
 
-export default class WebViewPage extends React.Component {
+class WebViewPage extends React.Component {
     constructor(props) {
         super(props);
         const {projectMode, flag} = props.route.params;
@@ -39,9 +40,11 @@ export default class WebViewPage extends React.Component {
 
 
     render() {
+        const {theme} = this.props;
+
         let navigatorBar = <NavigatorBar 
             title = {this.state.title}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {theme.styles.navBar}
             leftButton = {ViewUtils.getLeftBackButton(() => this.onBack())}
         />;   
 
@@ -64,6 +67,10 @@ const styles = StyleSheet.create({
         flex: 1,
         //marginTop: DeviceInfo.hasNotch() ? 30 : 0,
     },
-    
-    
-})
+});
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme,
+});
+
+export default connect(mapStateToProps)(WebViewPage);

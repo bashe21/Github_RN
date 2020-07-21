@@ -40,6 +40,7 @@ class SortKeyPage extends React.Component {
         this.params = this.props.route.params;
         this.backPress = new BackPressComponent((e) => this.onBackPress(e));
         this.languageDao = new LanguageDao(this.params.flag);
+        this.theme = props.route.params.theme;
         this.state = {
             checkedArray: SortKeyPage._keys(props),
             scrollEnabled: true,
@@ -191,14 +192,14 @@ class SortKeyPage extends React.Component {
         let title = FLAG_LANGUAGE.flag_language ? '语言排序' : '标签排序';
 
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            style: this.theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             title = {title}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {this.theme.styles.navBar}
             rightButton = {ViewUtils.getRightButton('保存', () => this.onSave())}
             leftButton = {ViewUtils.getLeftBackButton(() => this.onBack())}
         />

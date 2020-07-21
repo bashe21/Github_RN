@@ -36,6 +36,7 @@ class CustomKeyPage extends React.Component {
         this.changeValues = [];
         this.isRemoveKey = this.params.isRemoveKey;
         this.languageDao = new LanguageDao(this.params.flag);
+        this.theme = props.route.params.theme;
         this.state = {
             keys: [],
         };
@@ -196,14 +197,14 @@ class CustomKeyPage extends React.Component {
         let rightButtonTitle = this.isRemoveKey ? '移除' : '保存';
 
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            style: this.theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             title = {title}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {this.theme.styles.navBar}
             rightButton = {ViewUtils.getRightButton(rightButtonTitle, () => this.onSave())}
             leftButton = {ViewUtils.getLeftBackButton(() => this.onBack())}
         />

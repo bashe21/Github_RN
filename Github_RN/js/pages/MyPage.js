@@ -9,6 +9,10 @@ import ViewUtils from '../util/ViewUtils';
 import { color } from 'react-native-reanimated';
 import NavigationUtils from '../util/NavigationUtils';
 import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
+import CustomTheme from '../pages/CustomTheme';
+import { onShowCustomThemeView } from '../actions/theme';
+import actions from '../actions';
+import { connect } from 'react-redux';
 
 const THEME_COLOR = '#678';
 
@@ -38,7 +42,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class MyPage extends React.Component {
+class MyPage extends React.Component {
     getRightButton() {
         return (
             <View style={{flexDirection: 'row'}}>
@@ -87,10 +91,12 @@ export default class MyPage extends React.Component {
             case MoreMenu.Sort_Key:
                 routeName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_key;
+                params.theme = this.props.theme;
                 break;
             case MoreMenu.Sort_Language:
                 routeName = 'SortKeyPage';
                 params.flag = FLAG_LANGUAGE.flag_language;
+                params.theme = this.props.theme;
                 break;
             case MoreMenu.Custom_Key:
             case MoreMenu.Custom_Language:
@@ -98,6 +104,11 @@ export default class MyPage extends React.Component {
                 routeName = 'CustomKeyPage';
                 params.isRemoveKey = menu === MoreMenu.Remove_Key;
                 params.flag = (menu !== MoreMenu.Custom_Language ? FLAG_LANGUAGE.flag_key : FLAG_LANGUAGE.flag_language);
+                params.theme = this.props.theme;
+                break;
+            case MoreMenu.Custom_Theme:
+                const {onShowCustomThemeView} = this.props;
+                onShowCustomThemeView(true);
                 break;
             case MoreMenu.About_Author:
                 routeName = 'AboutMePage';
@@ -111,19 +122,32 @@ export default class MyPage extends React.Component {
     }
 
     getItem(menu) {
-        return ViewUtils.getMenuItem(() => this.onClick(menu), menu, THEME_COLOR);
+        const {theme} = this.props;
+        return ViewUtils.getMenuItem(() => this.onClick(menu), menu, theme.themeColor);
+    }
+
+    renderCustomThemeView() {
+        const {customThemeViewVisible, onShowCustomThemeView} = this.props;
+        return (
+            <CustomTheme 
+                visible = {customThemeViewVisible}
+                {...this.props}
+                onClose = {() => onShowCustomThemeView(false)}
+            />
+        )
     }
     
     render() {
+        const {theme} = this.props;
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            style: theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             title = {"我的"}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {theme.styles.navBar}
             rightButton = {this.getRightButton()}
             leftButton = {this.getLeftButton()}
         />
@@ -142,7 +166,7 @@ export default class MyPage extends React.Component {
                                 size={40}
                                 style={{
                                     marginRight: 10,
-                                    color: THEME_COLOR,
+                                    color: theme.themeColor,
                                 }}
                             />
                             <Text>Github Popular</Text>
@@ -153,7 +177,7 @@ export default class MyPage extends React.Component {
                             style={{
                                 marginLeft: 10,
                                 alignSelf: 'center',
-                                color: THEME_COLOR,
+                                color: theme.themeColor,
                             }}
                         />
                         
@@ -190,9 +214,20 @@ export default class MyPage extends React.Component {
                     {/* {反馈} */}
                     <View style={GlobalStyles.line}/>
                     {this.getItem(MoreMenu.Feedback)}
-
                 </ScrollView>
+                {this.renderCustomThemeView()}
             </View>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    customThemeViewVisible: state.theme.customThemeViewVisible,
+    theme: state.theme.theme,
+});
+
+const mapDispatchToProps = dispatch => ({
+    onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPage);

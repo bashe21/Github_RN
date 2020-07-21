@@ -6,9 +6,7 @@ import TimeSpan from '../mo/TimeSpan';
 import DeviceInfo from 'react-native-device-info';
 import ThemeDao from '../dao/expand/ThemeDao';
 import GlobalStyles from '../res/style/GlobalStyles';
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import ThemeFactory, { ThemeFlags } from '../res/style/ThemeFactory';
-import { onThemeInit, onThemeChange } from '../actions/theme';
 import { connect } from 'react-redux';
 import actions from '../actions';
 
@@ -22,7 +20,7 @@ class CustomTheme extends React.Component {
     }
 
     onSelectTheme(themeKey) {
-        this.props.onclose();
+        this.props.onClose();
         this.themeDao.save(ThemeFlags[themeKey]);
         const {onThemeChange} = this.props;
         onThemeChange(ThemeFactory.createTheme(ThemeFlags[themeKey]));
@@ -61,12 +59,12 @@ class CustomTheme extends React.Component {
     }
 
     renderContentView() {
-        <Modal 
-            animationType = {'slied'}
+        return <Modal 
+            animationType = {'slide'}
             transparent = {true}
             visible = {this.props.visible}
             onRequestClose = {() => {
-                this.props.onclose();
+                this.props.onClose();
             }}
         >
             <View style = {styles.modalContainer}>
@@ -91,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
     onThemeChange: (theme) => dispatch(actions.onThemeChange(theme)),
 });
 
-export default connect(mapDispatchToProps, mapDispatchToProps)(CustomTheme);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomTheme);
 
 const styles = StyleSheet.create({
     modalContainer: {

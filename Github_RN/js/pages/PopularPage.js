@@ -127,6 +127,7 @@ class PopularTab extends React.Component {
 
     renderItem(data) {
         const item = data.item;
+        const {theme} = this.props;
         return <PopularItem 
             projectModel = {item}
             onSelect={(callback) => {
@@ -135,6 +136,7 @@ class PopularTab extends React.Component {
                     projectMode: item,
                     flag: FLAG_STORAGE.flag_popular,
                     callback,
+                    theme,
                 })
             }}
             onFavorite = {(item, isFavorite) => {
@@ -145,6 +147,7 @@ class PopularTab extends React.Component {
 
     render() {
         let store = this._store();
+        const {theme} = this.props;
         return (
             <View>
                 <FlatList 
@@ -154,11 +157,11 @@ class PopularTab extends React.Component {
                     refreshControl = {
                         <RefreshControl 
                             title={'Loading'}
-                            titleColor={THEME_COLOR}
-                            colors={[{THEME_COLOR}]}
+                            titleColor={theme.themeColor}
+                            colors={[theme.themeColor]}
                             refreshing={store.isLoading}
                             onRefresh={() => this.loadData(false)}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme.themeColor}
                         />
                     }
                     ListFooterComponent={() => this.genIndicator()}
@@ -214,10 +217,10 @@ class PopularPage extends React.Component {
 
     _screens() {
         const tabs = [];
-        const {keys} = this.props;
+        const {keys, theme} = this.props;
         keys.forEach((item, index) => {
             if (item.checked) {
-                tabs.push(<Tab.Screen name={item.name} component={PopularTabPage} key={index}/>);
+            tabs.push(<Tab.Screen name={item.name} key={index}>{props => <PopularTabPage {...props} theme={theme}/>}</Tab.Screen>);
             }
             
         });
@@ -225,17 +228,17 @@ class PopularPage extends React.Component {
     }
 
     render() {
-        const {keys} = this.props;
-
+        const {keys, theme} = this.props;
+        
         let statusBar = {
-            backgroundColor: THEME_COLOR,
+            style: theme.styles.navBar,
             barStyle: 'light-content',
         }
 
         let navigationBar = <NavigatorBar 
             title = {"最热"}
             statusBar = {statusBar}
-            style = {{backgroundColor: THEME_COLOR}}
+            style = {theme.styles.navBar}
         />
 
         const TabNavigator = keys.length > 0 ? (
@@ -266,6 +269,7 @@ class PopularPage extends React.Component {
 
 const mapPopularStateToProps = state => ({
     keys: state.language.keys,
+    theme: state.theme.theme,
 });
 
 const mapPopularDispatchToProps = dispatch => ({
