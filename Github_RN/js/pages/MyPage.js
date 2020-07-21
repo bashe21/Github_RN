@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
 class MyPage extends React.Component {
     getRightButton() {
         return (
-            <View style={{flexDirection: 'row'}}>
+            <View>
                 <TouchableOpacity onPress={() => {
 
                 }}>
-                    <View style = {{padding: 5, marginRight: 8}}>
+                    <View>
                         <Featcher 
                             name = {'search'}
                             size = {24}
@@ -149,7 +149,7 @@ class MyPage extends React.Component {
             statusBar = {statusBar}
             style = {theme.styles.navBar}
             rightButton = {this.getRightButton()}
-            leftButton = {this.getLeftButton()}
+            // leftButton = {this.getLeftButton()}
         />
         
         return (

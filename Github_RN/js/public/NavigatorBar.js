@@ -11,36 +11,36 @@ const NAV_BAR_HEIGHT_ANDROID = 50; // 导航栏在android中的高度
 const STATUS_BAR_HEIGHT = 20; // 状态栏高度
 
 export default class NavigatorBar extends React.Component {
-    getRightButton() {
-        return (
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity onPress={() => {
+    // getRightButton() {
+    //     return (
+    //         <View style={{flexDirection: 'row'}}>
+    //             <TouchableOpacity onPress={() => {
 
-                }}>
-                    <View style = {{padding: 5, marginRight: 8}}>
-                        <Featcher 
-                            name = {'search'}
-                            size = {24}
-                            style = {{color: 'white'}}
-                        />
-                    </View>
+    //             }}>
+    //                 <View style = {{padding: 5, marginRight: 8}}>
+    //                     <Featcher 
+    //                         name = {'search'}
+    //                         size = {24}
+    //                         style = {{color: 'white'}}
+    //                     />
+    //                 </View>
 
-                </TouchableOpacity>
-            </View>
-        )
-    }
+    //             </TouchableOpacity>
+    //         </View>
+    //     )
+    // }
 
-    getLeftButton(callback) {
-        return (
-            <TouchableOpacity onPress={callback} style = {{padding: 8, paddingLeft: 12}}>
-                <Ionicons 
-                    name = {'ios-arrow-back'}
-                    size = {26}
-                    style = {{color: 'white'}}
-                />
-            </TouchableOpacity>
-        )
-    }
+    // getLeftButton(callback) {
+    //     return (
+    //         <TouchableOpacity onPress={callback} style = {{padding: 8, paddingLeft: 12}}>
+    //             <Ionicons 
+    //                 name = {'ios-arrow-back'}
+    //                 size = {26}
+    //                 style = {{color: 'white'}}
+    //             />
+    //         </TouchableOpacity>
+    //     )
+    // }
 
     render() {
         let statusBar = !this.props.statusBar.hidden ? 
@@ -54,11 +54,16 @@ export default class NavigatorBar extends React.Component {
 
         let content = this.props.hide ? null :
         <View style={styles.navBar}>
-            {this.props.leftButton}
+            <View style={styles.leftButton}>
+                {this.props.leftButton}
+            </View>
+            
             <View style={[styles.navBarTitleContainer, this.props.titleLayoutStyle]}>
                 {titleView}
             </View>
-            {this.props.rightButton}
+            <View style={styles.rightButton}>
+                {this.props.rightButton}
+            </View>
         </View>;
 
         return (
@@ -131,5 +136,25 @@ const styles = StyleSheet.create({
         right: 40,
         top: 20,
         bottom: 0,
+    },
+
+    leftButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        width: 30,
+        top: 20,
+        bottom: 0,
+        left: 10,
+    }, 
+
+    rightButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        width: 30,
+        top: 20,
+        bottom: 0,
+        right: 10,
     }
 })

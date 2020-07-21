@@ -1,7 +1,7 @@
 import ProjectModel from '../mo/ProjectModel';
 import Utils from '../util/Utils';
 
-export function handlerData(actionType, dispatch, storeName, data, pageSize, favoriteDao) {
+export function handlerData(actionType, dispatch, storeName, data, pageSize, favoriteDao, params) {
     let fixItems = [];
     if (data && data.data) {
         if (Array.isArray(data.data)) {
@@ -20,6 +20,7 @@ export function handlerData(actionType, dispatch, storeName, data, pageSize, fav
             projectModes: projectModes,
             storeName,
             pageIndex: 1,
+            ...params,
         });
     });
 }
@@ -35,7 +36,11 @@ export async function projectModels(showItems, favoriteDao, callback) {
     for (let i = 0; i < showItems.length; i++) {
         projectModels.push(new ProjectModel(showItems[i], Utils.checkFavorite(showItems[i], keys)));
     }
-    if (typeof callback === 'function') {
-        callback(projectModels);
-    }
+    doCallBack(callback, projectModels);
 }
+
+export const doCallBack = (callback, object) => {
+    if (typeof callback === 'function') {
+        callback(object);
+    }
+};

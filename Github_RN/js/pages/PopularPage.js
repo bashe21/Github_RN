@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl} from 'react-native';
+import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {connect} from 'react-redux';
@@ -14,10 +14,10 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
+import Featcher from 'react-native-vector-icons/Feather';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
-const THEME_COLOR = '#678';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 const styles = StyleSheet.create({
@@ -227,6 +227,25 @@ class PopularPage extends React.Component {
         return tabs;
     }
 
+    getRightButton() {
+        return (
+            <View>
+                <TouchableOpacity onPress={() => {
+
+                }}>
+                    <View>
+                        <Featcher 
+                            name = {'search'}
+                            size = {24}
+                            style = {{color: 'white'}}
+                        />
+                    </View>
+
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     render() {
         const {keys, theme} = this.props;
         
@@ -239,6 +258,7 @@ class PopularPage extends React.Component {
             title = {"最热"}
             statusBar = {statusBar}
             style = {theme.styles.navBar}
+            rightButton = {this.getRightButton()}
         />
 
         const TabNavigator = keys.length > 0 ? (
