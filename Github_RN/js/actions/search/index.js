@@ -72,7 +72,7 @@ function checkKeyIsExist(keys, key) {
 /* 
 取消一个异步任务
 */
-export function onSeearchCancel(token) {
+export function onSearchCancel(token) {
     return dispatch => {
         CANCEL_TOKENS.push(token);
         dispatchEvent({type: Types.SEARCH_CANCEL});

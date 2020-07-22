@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity, Platform} from 'react-native';
+import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity, Platform, TouchableOpacityComponent} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {connect} from 'react-redux';
@@ -17,6 +17,7 @@ import LanguageDao, { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 import Featcher from 'react-native-vector-icons/Feather';
 import BackPressComponent from '../pages/BackPressComponent';
 import NavigationUtils from '../util/NavigationUtils';
+import GlobalStyles from '../res/style/GlobalStyles';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -55,6 +56,19 @@ const styles = StyleSheet.create({
     statusBar: {
         height: 20,
     },
+    
+    bottomButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.9,
+        height: 40,
+        position: 'absolute',
+        left: 10,
+        top: GlobalStyles.window_height - 45,
+        right: 10,
+        borderRadius: 3,
+        
+    }
 })
 
 const Tab = createMaterialTopTabNavigator();
@@ -69,12 +83,12 @@ class SearchPage extends React.Component {
     }
 
     onBackPress() {
-        const {onSearchCacel, onLoadLanguage} = this.props;
-        onSearchCacel(); // 退出取消搜索
+        const {onSearchCancel, onLoadLanguage} = this.props;
+        onSearchCancel(); // 退出取消搜索
         this.refs.input.blur();
         NavigationUtils.goBack(this.props.navigation);
         if (this.isKeyChange) {
-            onlanguagechange(FLAG_LANGUAGE.flag_key); // 重新加载标签
+            onLoadLanguage(FLAG_LANGUAGE.flag_key); // 重新加载标签
         }
         return true;
     }
@@ -96,15 +110,22 @@ class SearchPage extends React.Component {
                 this.refs.toast.show('没有更多了');
             });
         } else {
-            onSearch(inputKey, pageSize,this.serchToken = new Date().getTime(), this.favoriteDao, keys, message => {
+            onSearch(this.inputKey, pageSize,this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
                 this.refs.toast.show(message);
             });
         }
         
     }
 
+    /* 
+    添加标签
+    */
+    saveKey() {
+
+    }
+
     render() {
-        const {isLoading, projectModes, showBottomButton, hideLoadingMore} = this.props;
+        const {isLoading, projectModes, showBottomButton, hideLoadingMore} = this.props.search;
         const {theme} = this.props.route.params;
         let statusBar = null;
         if (Platform.OS === 'ios') {
@@ -113,10 +134,9 @@ class SearchPage extends React.Component {
             />
         }
         
-        return (
-            <View>
-                <FlatList 
-                    data = {store.projectModes}
+        let listView = !isLoading ? (
+            <FlatList 
+                    data = {projectModes}
                     renderItem = {data => this.renderItem(data)}
                     keyExtractor = {item => "" + item.item.id}
                     refreshControl = {
@@ -124,10 +144,15 @@ class SearchPage extends React.Component {
                             title={'Loading'}
                             titleColor={theme.themeColor}
                             colors={[theme.themeColor]}
-                            refreshing={store.isLoading}
+                            refreshing={isLoading}
                             onRefresh={() => this.loadData(false)}
                             tintColor={theme.themeColor}
                         />
+                    }
+                    contentInset = {
+                        {
+                            bottom: 45,
+                        }
                     }
                     ListFooterComponent={() => this.genIndicator()}
                     onEndReached = {() => {
@@ -146,26 +171,40 @@ class SearchPage extends React.Component {
                         console.log('----onMomentumScrollBegin----')
                     }}
                 />
-                <Toast 
-                    ref={'toast'}
-                    position={'center'}
-                />
+        ) : null;
+        
+        let bottomButton = showBottomButton ? (
+            <TouchableOpacity
+                style = {[styles.bottomButton, {backgroundColor: this.params.theme.themeColor}]}
+                onPress = {() => {
+                    this.saveKey();
+                }}
+            >
+                <View style = {{justifyContent: 'center'}}>
+                    <Text style = {styles.title}>朕收下了</Text>
+                </View>
+            </TouchableOpacity>
+        ) : null;
+
+        return (
+            <View>
+                
             </View>
         );
     }
 }
 
-const mapPopularStateToProps = state => ({
+const mapStateToProps = state => ({
     keys: state.language.keys,
     theme: state.theme.theme,
     search: state.search,
 });
 
-const mapPopularDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
     onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag)),
-    onSearch: (inputKey, pageSize,token, favoriteDao, popularKey, callback) => dispatch(actions.onSearch(inputKey, pageSize,token, favoriteDao, popularKey, callback)),
-    onLoadMoreSearch: (pageIndex, pageSize, dataArray, favoriteDao, callback) => dispatch(actions.onLoadMoreSearch(pageIndex, pageSize, dataArray, favoriteDao, callback)),
-    onSearchCancel: (token) => dispatch(actions.onSearchCancel(token),
+    onSearch: (inputKey, pageSize,token, favoriteDao, popularKey, callback) => dispatch(actions.onloadSearch(inputKey, pageSize,token, favoriteDao, popularKey, callback)),
+    onLoadMoreSearch: (pageIndex, pageSize, dataArray, favoriteDao, callback) => dispatch(actions.onloadMoreSearch(pageIndex, pageSize, dataArray, favoriteDao, callback)),
+    onSearchCancel: (token) => dispatch(actions.onSearchCancel(token)),
 });
 
-export default connect(mapPopularStateToProps, mapPopularDispatchToProps)(SearchPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

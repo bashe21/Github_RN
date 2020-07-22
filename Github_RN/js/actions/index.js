@@ -3,7 +3,7 @@ import {onloadPopularData, onloadMorePopularData, onFlushPopularFavorite} from '
 import {onloadTrendingData, onloadMoreTrendingData, onFlushTrendingFavorite} from './trending';
 import {onloadFavoriteData} from './favorite';
 import {onLoadLanguage} from './language';
-import {onloadSearch, onloadMoreSearch, onSeearchCancel} from './search';
+import {onloadSearch, onloadMoreSearch, onSearchCancel} from './search';
 
 export default {
     onThemeChange,
@@ -19,5 +19,5 @@ export default {
     onThemeInit,
     onloadSearch,
     onloadMoreSearch,
-    onSeearchCancel,
+    onSearchCancel,
 }
