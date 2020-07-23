@@ -8,6 +8,8 @@ import NavigationUtils from '../util/NavigationUtils';
 import {WebView} from 'react-native-webview';
 import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
+import share from '../res/data/share';
+import ShareUtil from '../util/ShareUtil';
 
 const TRENDING_URL = 'https://github.com/';
 
@@ -70,7 +72,10 @@ export default class DetailPage extends React.Component {
                         style = {{color: 'white', marginRight: 15}}
                     />
                     {ViewUtils.getLeftShareButton(() => {
-
+                        let shareApp = share.share_app;
+                        ShareUtil.shareboard(shareApp.content, shareApp.imgUrl, this.url, shareApp.title, [0, 1, 2, 3, 4, 5, 6], (code, message) => {
+                            console.log('result:' + code +message);
+                        });
                     })}
                 </TouchableOpacity>
             </View>

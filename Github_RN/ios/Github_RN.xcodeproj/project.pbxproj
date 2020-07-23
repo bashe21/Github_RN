@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* Github_RNTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Github_RNTests.m */; };
 		8D294D8724C96C5C00AA5105 /* RNUMConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D294D8024C96C5C00AA5105 /* RNUMConfigure.m */; };
 		8D294D8824C96C5C00AA5105 /* UMAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D294D8124C96C5C00AA5105 /* UMAnalyticsModule.m */; };
+		8D294D8C24C9864400AA5105 /* UMShareModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D294D8B24C9864400AA5105 /* UMShareModule.m */; };
 		A8769357D58185C627F7F84E /* libPods-Github_RN-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE462E14EACAFE1FC549E8F8 /* libPods-Github_RN-tvOS.a */; };
 		ACC979847A64877C076DFFD9 /* libPods-Github_RN-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 233CE696EFD85A85AE074F3C /* libPods-Github_RN-tvOSTests.a */; };
 		C851B91A733F0B4FF425C2E6 /* libPods-Github_RN-Github_RNTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFBD8208B989640AFCCB266 /* libPods-Github_RN-Github_RNTests.a */; };
@@ -68,6 +69,8 @@
 		8D294D8124C96C5C00AA5105 /* UMAnalyticsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMAnalyticsModule.m; sourceTree = "<group>"; };
 		8D294D8424C96C5C00AA5105 /* RNUMConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUMConfigure.h; sourceTree = "<group>"; };
 		8D294D8924C96D7B00AA5105 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		8D294D8A24C9864400AA5105 /* UMShareModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMShareModule.h; sourceTree = "<group>"; };
+		8D294D8B24C9864400AA5105 /* UMShareModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMShareModule.m; sourceTree = "<group>"; };
 		C6A18BE9603AAFE1DCE2653A /* libPods-Github_RN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D182D6558FB968F9341EEA46 /* Pods-Github_RN-Github_RNTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-Github_RNTests.release.xcconfig"; path = "Target Support Files/Pods-Github_RN-Github_RNTests/Pods-Github_RN-Github_RNTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE462E14EACAFE1FC549E8F8 /* libPods-Github_RN-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +216,8 @@
 				8D294D8024C96C5C00AA5105 /* RNUMConfigure.m */,
 				8D294D7E24C96C5C00AA5105 /* UMAnalyticsModule.h */,
 				8D294D8124C96C5C00AA5105 /* UMAnalyticsModule.m */,
+				8D294D8A24C9864400AA5105 /* UMShareModule.h */,
+				8D294D8B24C9864400AA5105 /* UMShareModule.m */,
 			);
 			path = UMReactBridge;
 			sourceTree = "<group>";
@@ -456,6 +461,8 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/UMSocialUI/UMSocialSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -476,6 +483,8 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -550,6 +559,8 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/UMSocialUI/UMSocialSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -570,6 +581,8 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -651,6 +664,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D294D8C24C9864400AA5105 /* UMShareModule.m in Sources */,
 				8D294D8824C96C5C00AA5105 /* UMAnalyticsModule.m in Sources */,
 				8D294D8724C96C5C00AA5105 /* RNUMConfigure.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

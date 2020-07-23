@@ -1,0 +1,20 @@
+{
+    "share_app": {
+        "title": "分享GitHub Popular",
+        "content": "GitHub最受欢迎的开源项目浏览神器",
+        "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595505202388&di=c41236dfca4238b44edac598192c7536&imgtype=0&src=http%3A%2F%2Fwww.xiujukoo.com%2Fupimg%2Fallimg%2F170508%2F0327420.jpg",
+        "url": "https://www.baidu.com"
+    },
+    "share_blog": {
+        "title": "分享博客",
+        "content": "关于React Native技术",
+        "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595505202388&di=c41236dfca4238b44edac598192c7536&imgtype=0&src=http%3A%2F%2Fwww.xiujukoo.com%2Fupimg%2Fallimg%2F170508%2F0327420.jpg",
+        "url": "https://www.baidu.com"
+    },
+    "share_repo": {
+        "title": "来自GitHub分享",
+        "content": "React Native开源技术",
+        "imgUrl": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595505202388&di=c41236dfca4238b44edac598192c7536&imgtype=0&src=http%3A%2F%2Fwww.xiujukoo.com%2Fupimg%2Fallimg%2F170508%2F0327420.jpg",
+        "url": "https://www.baidu.com"
+    },
+}
