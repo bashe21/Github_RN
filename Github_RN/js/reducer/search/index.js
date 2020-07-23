@@ -17,13 +17,14 @@ export default function onAction(state=defaultState, action) {
                 isLoading: true,
                 hideLoadingMore: true,
                 showBottomButtom: false,
+                showText: '取消',
             };
         case Types.SEARCH_REFRESH_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 hideLoadingMore: false,
-                showBottomButtom: action.showBottomButtom,
+                showBottomButton: action.showBottomButton,
                 items: action.items,
                 projectModes: action.projectModes,
                 pageIndex: action.pageIndex,

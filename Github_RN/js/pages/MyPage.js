@@ -148,7 +148,7 @@ class MyPage extends React.Component {
             title = {"我的"}
             statusBar = {statusBar}
             style = {theme.styles.navBar}
-            rightButton = {this.getRightButton()}
+            //rightButton = {this.getRightButton()}
             // leftButton = {this.getLeftButton()}
         />
         

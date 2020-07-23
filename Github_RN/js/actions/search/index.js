@@ -3,6 +3,7 @@ import DataStore, {FLAG_STORAGE} from '../../dao/expand/DataStorage';
 import {handlerData, projectModels, doCallBack} from '../ActionUtil';
 import { max } from 'react-native-reanimated';
 import ArrayUtil from '../../util/ArrayUtil';
+import Utils from '../../util/Utils';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -19,20 +20,21 @@ const CANCEL_TOKENS = [];
 export function onloadSearch(inputKey, pageSize, token, favoriteDao, popularKyes, callback) {
     return dispatch => {
         dispatch({type: Types.SEARCH_REFRESH});
-        fetch(genFetchURL(inputKey)).then.length((response) => {
+        fetch(genFetchURL(inputKey)).then((response) => {
             return hasCancel(token) ? null : response.json();
         }).then((responseData) => {
             if (hasCancel(token, true)) {
                 console.log('user cancel');
                 return;
             }
-            if (!responseData || responseData.item || responseData.item.length === 0) {
+            if (!responseData || !responseData.items || responseData.items.length === 0) {
                 dispatchEvent({type: Types.SEARCH_FAIL, message: `没有找到关于${inputKey}的项目`});
                 doCallBack(callback, `没有找到关于${inputKey}的项目`);
             } 
             let items = responseData.items;
+            let showBottomButton =  !Utils.checkKeyIsExist(popularKyes, inputKey);
             handlerData(Types.SEARCH_REFRESH_SUCCESS, dispatch, '', {data: items}, pageSize, favoriteDao, {
-                showBottomButton: !checkKeyIsExist(popularKyes, inputKey),
+                showBottomButton: showBottomButton,
                 inputKey,
             });
         }).catch((e) => {
@@ -59,15 +61,15 @@ function hasCancel(token, isRemove) {
     return false;
 }
 
-function checkKeyIsExist(keys, key) {
-    for (let i = 0; i < keys.length; i++) {
-        const element = keys[i];
-        if (element.name.toLowerCase() === key.toLowerCase()) {
-            return true;
-        }
-        return false;
-    }
-}
+// function checkKeyIsExist(keys, key) {
+//     for (let i = 0; i < keys.length; i++) {
+//         const element = keys[i];
+//         if (element.name.toLowerCase() === key.toLowerCase()) {
+//             return true;
+//         }
+//         return false;
+//     }
+// }
 
 /* 
 取消一个异步任务
@@ -75,7 +77,7 @@ function checkKeyIsExist(keys, key) {
 export function onSearchCancel(token) {
     return dispatch => {
         CANCEL_TOKENS.push(token);
-        dispatchEvent({type: Types.SEARCH_CANCEL});
+        dispatch({type: Types.SEARCH_CANCEL});
     }
 }
 
@@ -97,7 +99,7 @@ export function onloadMoreSearch(pageIndex, pageSize, dataArray=[], favoriteDao,
                         callback('no more');
                     }
                     dispatch({
-                        type: Types.POPULAR_LOAD_MORE_FAIL,
+                        type: Types.SEARCH_LOAD_MORE_FAIL,
                         error: 'no more',
                         pageIndex: --pageIndex,
                         projectModes: [dataArray],

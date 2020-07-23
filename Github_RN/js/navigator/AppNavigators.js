@@ -9,6 +9,7 @@ import AboutPage from '../pages/about/AboutPage';
 import AboutMePage from '../pages/about/AboutMePage';
 import CustomKeyPage from '../pages/CustomKeyPage';
 import SortKeyPage from '../pages/SortKeyPage';
+import SearchPage from '../pages/SearchPage';
 
 const Stack = createStackNavigator();
 const AuthContext = createContext();
@@ -61,6 +62,7 @@ function AppNavigators() {
         <Stack.Screen name = 'AboutMePage' component = {AboutMePage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'CustomKeyPage' component = {CustomKeyPage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'SortKeyPage' component = {SortKeyPage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'SearchPage' component = {SearchPage} options = {{headerShown: false}}/>,
     ]
     
 

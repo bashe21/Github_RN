@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity, Platform, TouchableOpacityComponent} from 'react-native';
+import {FlatList, View, ActivityIndicator, Text, StyleSheet, RefreshControl, TouchableOpacity, Platform, TextInput} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {connect} from 'react-redux';
@@ -18,17 +18,20 @@ import Featcher from 'react-native-vector-icons/Feather';
 import BackPressComponent from '../pages/BackPressComponent';
 import NavigationUtils from '../util/NavigationUtils';
 import GlobalStyles from '../res/style/GlobalStyles';
+import ViewUtils from '../util/ViewUtils';
+import Utils from '../util/Utils';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
+const pageSize = 10; // 设为常量，防止修改
 
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5fcff',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor: '#f5fcff',
     },
 
     welcome: {
@@ -64,11 +67,38 @@ const styles = StyleSheet.create({
         height: 40,
         position: 'absolute',
         left: 10,
-        top: GlobalStyles.window_height - 45,
+        top: DeviceInfo.hasNotch() ? (GlobalStyles.window_height - 45 - 32) : (GlobalStyles.window_height - 45),
         right: 10,
         borderRadius: 3,
         
+    },
+
+    centering: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+    },
+
+    textInput: {
+        flex: 1, 
+        height: (Platform.OS === 'ios') ? 26 : 36,
+        borderWidth: (Platform.OS === 'ios') ? 1 : 0,
+        borderColor: 'white',
+        alignSelf: 'center',
+        paddingLeft: 5,
+        marginRight: 10,
+        marginLeft: 5,
+        borderRadius: 3,
+        opacity: 0.7,
+        color: 'white',
+    },
+
+    title: {
+        fontSize: 18,
+        color: 'white',
+        fontWeight: '500',
     }
+
 })
 
 const Tab = createMaterialTopTabNavigator();
@@ -103,25 +133,112 @@ class SearchPage extends React.Component {
 
     loadData(loadMore) {
         const {onSearch, onLoadMoreSearch, search, keys} = this.props;
-        const store = this._store();
-        const url = this.genFetchUrl(this.storeName);
         if (loadMore) {
-            onLoadMoreSearch(search.pageIndex, pageSize, search.items, this.favoriteDao, callback => {
-                this.refs.toast.show('没有更多了');
+            onLoadMoreSearch(++search.pageIndex, pageSize, search.items, this.favoriteDao, callback => {
+                this.toast.show('没有更多了');
             });
         } else {
             onSearch(this.inputKey, pageSize,this.searchToken = new Date().getTime(), this.favoriteDao, keys, message => {
-                this.refs.toast.show(message);
+                this.toast.show(message);
             });
         }
         
+    }
+
+    genIndicator(hideLoadingMore) {
+        return hideLoadingMore ? null : 
+        (<View style={styles.indicatorContainer}>
+            <ActivityIndicator 
+                style={styles.indicator}
+            />
+            <Text>正在加载更多</Text>
+        </View>);
     }
 
     /* 
     添加标签
     */
     saveKey() {
+        const {keys} = this.props;
+        let key = this.inputKey;
+        if (Utils.checkKeyIsExist(keys,key)) {
+            this.toast.show(key + '已经存在');
+        } else {
+            key = {
+                'path': key,
+                'name': key,
+                'checked': true
+            };
+            keys.unshift(key); // 将key添加到数组的开头
+            this.languageDao.save(keys);
+            this.toast.show(key.name + '保存成功');
+            this.isKeyChange = true;
+        }
+    }
 
+    onRightButtonClick() {
+        const {onSearchCancel, search} = this.props;
+        if (search.showText === '搜索') {
+            this.loadData(false);
+        } else {
+            onSearchCancel(this.searchToken);
+        }
+    }
+
+    renderNavBar() {
+        const {showText, inputKey} = this.props.search;
+        const {theme} = this.params;
+        const placeholder = inputKey || '请输入';
+        let backButton = ViewUtils.getLeftBackButton(() => this.onBackPress());
+        let inputView = <TextInput 
+            ref = 'input'
+            placeholder = {placeholder}
+            onChangeText = {text => this.inputKey = text}
+            style = {styles.textInput}
+        />
+
+        let rightButton = <TouchableOpacity 
+            onPress = {() => {
+                this.refs.input.blur(); // 收起键盘
+                this.onRightButtonClick();
+            }}
+        >
+            <View style = {{marginRight: 10}}>
+        <Text style = {styles.title}>{showText}</Text>
+            </View>
+        </TouchableOpacity>
+        
+        return <View style = {{
+            backgroundColor: theme.themeColor,
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios : GlobalStyles.nav_bar_height_android,
+            paddingTop: 15,
+        }}>
+            {backButton}
+            {inputView}
+            {rightButton}
+        </View>
+    }
+
+    renderItem(data) {
+        const item = data.item;
+        const {theme} = this.props;
+        return <PopularItem 
+            projectModel = {item}
+            onSelect={(callback) => {
+                const {navigation} = this.props;
+                navigation.navigate('DetailPage', {
+                    projectMode: item,
+                    flag: FLAG_STORAGE.flag_popular,
+                    callback,
+                    theme,
+                })
+            }}
+            onFavorite = {(item, isFavorite) => {
+                FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular);
+            }}
+        />
     }
 
     render() {
@@ -154,7 +271,7 @@ class SearchPage extends React.Component {
                             bottom: 45,
                         }
                     }
-                    ListFooterComponent={() => this.genIndicator()}
+                    ListFooterComponent={() => this.genIndicator(hideLoadingMore)}
                     onEndReached = {() => {
                         console.log('----onEndReached----') //注意初始化的时候会被调用
                         setTimeout(() => { // 避免onEndReached比onMomentumScrollBegin先调用问题
@@ -175,7 +292,7 @@ class SearchPage extends React.Component {
         
         let bottomButton = showBottomButton ? (
             <TouchableOpacity
-                style = {[styles.bottomButton, {backgroundColor: this.params.theme.themeColor}]}
+                style = {[styles.bottomButton, {backgroundColor: theme.themeColor}]}
                 onPress = {() => {
                     this.saveKey();
                 }}
@@ -186,9 +303,25 @@ class SearchPage extends React.Component {
             </TouchableOpacity>
         ) : null;
 
+        let indicatorView = isLoading ? 
+                <ActivityIndicator 
+                    style = {styles.centering}
+                    size = 'large'
+                    animating = {isLoading}
+                /> : null;
+
+        let resutltView = <View style = {{flex: 1}}>
+            {indicatorView}
+            {listView}
+        </View>;
+
         return (
-            <View>
-                
+            <View style = {styles.container}>
+                {statusBar}
+                {this.renderNavBar()}
+                {resutltView}
+                {bottomButton}
+                <Toast ref = {toast => this.toast = toast}/>
             </View>
         );
     }

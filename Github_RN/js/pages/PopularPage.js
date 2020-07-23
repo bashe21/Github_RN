@@ -15,6 +15,8 @@ import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 import Featcher from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import NavigationUtils from '../util/NavigationUtils';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -228,16 +230,23 @@ class PopularPage extends React.Component {
     }
 
     getRightButton() {
+        const {theme} = this.props;
         return (
             <View>
                 <TouchableOpacity onPress={() => {
-
+                    NavigationUtils.goPage(this.props.navigation, 'SearchPage', {
+                        theme,
+                    });
                 }}>
-                    <View>
-                        <Featcher 
-                            name = {'search'}
+                    <View >
+                        <Ionicons 
+                            name = {'ios-search'}
                             size = {24}
-                            style = {{color: 'white'}}
+                            style = {{
+                                color: 'white',
+                                marginRight: 8,
+                                alignSelf: 'center',
+                            }}
                         />
                     </View>
 
