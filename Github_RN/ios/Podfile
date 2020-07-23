@@ -81,6 +81,13 @@ target 'Github_RN' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  # umeng公共基础
+  pod 'UMCCommon'
+  pod 'UMCSecurityPlugins'
+  pod 'UMCCommonLog'
+  # 统计分析
+  pod 'UMCAnalytics'
+  
   target 'Github_RNTests' do
     inherit! :complete
     # Pods for testing

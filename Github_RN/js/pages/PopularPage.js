@@ -17,6 +17,7 @@ import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 import Featcher from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigationUtils from '../util/NavigationUtils';
+import AnalyticsUtil from '../util/AnalyticsUtil';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -237,6 +238,7 @@ class PopularPage extends React.Component {
                     NavigationUtils.goPage(this.props.navigation, 'SearchPage', {
                         theme,
                     });
+                    AnalyticsUtil.onEvent('SearchButtonClick');
                 }}>
                     <View >
                         <Ionicons 

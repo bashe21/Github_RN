@@ -4,6 +4,12 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import "RNUMConfigure.h"
+#import "UMAnalyticsModule.h"
+#import "Constants.h"
+
+#import <UMAnalytics/MobClick.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -21,6 +27,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [self initUmeng];
   return YES;
 }
 
@@ -31,6 +38,13 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (void)initUmeng {
+  // UMeng统计
+  [MobClick setScenarioType:E_UM_NORMAL];
+  [UMConfigure setLogEnabled:YES];
+  [RNUMConfigure initWithAppkey:UM_AppKey channel:UM_ChannelID];
 }
 
 @end
