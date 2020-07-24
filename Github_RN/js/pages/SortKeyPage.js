@@ -21,6 +21,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import NavigationUtils from '../util/NavigationUtils';
 import ArrayUtil from '../util/ArrayUtil';
 import {DragSortableView} from 'react-native-drag-sort';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -205,7 +206,9 @@ class SortKeyPage extends React.Component {
         />
 
         return (
-            <View style={styles.container}>
+            <SafeAreaViewPlus
+                topColor = {this.theme.themeColor}
+            >
                 {navigationBar}
                 <ScrollView
                     ref={(scrollView)=> this.scrollView = scrollView}
@@ -241,8 +244,11 @@ class SortKeyPage extends React.Component {
                         }}
                     />
                 </ScrollView>
+            </SafeAreaViewPlus>
+            // <View style={styles.container}>
                 
-            </View>
+                
+            // </View>
         )
     }
 }

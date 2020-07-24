@@ -16,6 +16,7 @@ import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
 import { FLAG_LANGUAGE } from '../dao/expand/LanguageDao';
 import ArrayUtil from '../util/ArrayUtil';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://trendings.herokuapp.com/repo';
 const QUERY_STR = '?since=weekly';
@@ -316,11 +317,16 @@ class TrendingPage extends React.Component {
             ) : null;
 
         return (
-            <View style={styles.tab}>
+            <SafeAreaViewPlus
+                topColor = {theme.themeColor}
+            >
                 {navigationBar}
                 {TabNavigator}
                 {this.renderTrendingDiag()}
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={styles.tab}>
+                
+            // </View>
             
         );
     }

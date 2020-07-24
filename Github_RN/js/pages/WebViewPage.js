@@ -9,6 +9,7 @@ import {WebView} from 'react-native-webview';
 import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 import {connect} from 'react-redux';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const THEME_COLOR = '#678';
 
@@ -49,7 +50,9 @@ class WebViewPage extends React.Component {
         />;   
 
         return (
-            <View style={styles.container}>
+            <SafeAreaViewPlus
+                topColor = {theme.themeColor}
+            >
                 {navigatorBar}
                 <WebView 
                     ref = {webView => this.webView = webView}
@@ -57,7 +60,10 @@ class WebViewPage extends React.Component {
                     onNavigationStateChange = {e => this.onNavigationStateChange(e)}
                     source = {{uri: this.state.url}}
                 />
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={styles.container}>
+                
+            // </View>
         )
     }
 }

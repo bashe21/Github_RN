@@ -18,6 +18,7 @@ import Featcher from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigationUtils from '../util/NavigationUtils';
 import AnalyticsUtil from '../util/AnalyticsUtil';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -289,10 +290,15 @@ class PopularPage extends React.Component {
             </Tab.Navigator>) : null;
 
         return (
-            <View style={styles.tab}>
+            <SafeAreaViewPlus 
+                topColor = {theme.themeColor}
+            >
                 {navigationBar}
                 {TabNavigator}
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={styles.tab}>
+                
+            // </View>
             
         );
     }

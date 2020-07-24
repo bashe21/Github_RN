@@ -20,6 +20,7 @@ import NavigationUtils from '../util/NavigationUtils';
 import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtils from '../util/ViewUtils';
 import Utils from '../util/Utils';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     },
 
     statusBar: {
-        height: 20,
+        //height: 20,
     },
     
     bottomButton: {
@@ -213,7 +214,7 @@ class SearchPage extends React.Component {
             flexDirection: 'row',
             alignItems: 'center',
             height: (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios : GlobalStyles.nav_bar_height_android,
-            paddingTop: 15,
+            paddingTop: 0,
         }}>
             {backButton}
             {inputView}
@@ -316,13 +317,18 @@ class SearchPage extends React.Component {
         </View>;
 
         return (
-            <View style = {styles.container}>
+            <SafeAreaViewPlus
+                topColor = {theme.themeColor}
+            >
                 {statusBar}
                 {this.renderNavBar()}
                 {resutltView}
                 {bottomButton}
                 <Toast ref = {toast => this.toast = toast}/>
-            </View>
+            </SafeAreaViewPlus>
+            // <View style = {styles.container}>
+                
+            // </View>
         );
     }
 }

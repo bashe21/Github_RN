@@ -20,6 +20,7 @@ import CheckBox from 'react-native-check-box'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigationUtils from '../util/NavigationUtils';
 import ArrayUtil from '../util/ArrayUtil';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -210,12 +211,17 @@ class CustomKeyPage extends React.Component {
         />
 
         return (
-            <View>
+            <SafeAreaViewPlus
+                topColor = {this.theme.themeColor}
+            >
                 {navigationBar}
                 <ScrollView>
                     {this.renderView()}
                 </ScrollView>
-            </View>
+            </SafeAreaViewPlus>
+            // <View>
+                
+            // </View>
         )
     }
 }

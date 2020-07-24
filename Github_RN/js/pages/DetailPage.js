@@ -10,6 +10,7 @@ import FavoriteDao from '../dao/expand/FavoriteDao';
 import {FLAG_STORAGE} from '../dao/expand/DataStorage';
 import share from '../res/data/share';
 import ShareUtil from '../util/ShareUtil';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const TRENDING_URL = 'https://github.com/';
 
@@ -93,7 +94,9 @@ export default class DetailPage extends React.Component {
         />;   
 
         return (
-            <View style={styles.container}>
+            <SafeAreaViewPlus
+                topColor = {this.theme.themeColor}
+            >
                 {navigatorBar}
                 <WebView 
                     ref = {webView => this.webView = webView}
@@ -101,7 +104,10 @@ export default class DetailPage extends React.Component {
                     onNavigationStateChange = {e => this.onNavigationStateChange(e)}
                     source = {{uri: this.state.url}}
                 />
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={styles.container}>
+                
+            // </View>
         )
     }
 }

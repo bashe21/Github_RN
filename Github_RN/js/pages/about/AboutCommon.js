@@ -7,11 +7,13 @@ import config from '../../res/data/config'
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import GlobalStyles from '../../res/style/GlobalStyles';
 import ViewUtils from '../../util/ViewUtils';
+import DeviceInfo from 'react-native-device-info';
 
 const THEME_COLOR = '#678';
 consnt = AVATAR_SIZE = 90;
 const PARALLAX_HEADER_HEIGHT = 270;
-const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? GlobalStyles.nav_bar_height_ios + 20 : GlobalStyles.nav_bar_height_android;
+const TOP = (Platform.OS === 'ios') ? 20+ (DeviceInfo.hasNotch() ? 24 : 0) : 0;
+const STICKY_HEADER_HEIGHT = (Platform.OS === 'ios') ? ( GlobalStyles.nav_bar_height_ios + TOP) : GlobalStyles.nav_bar_height_android;
 const window = Dimensions.get('window');
 
 export default class AboutCommon {
@@ -136,8 +138,9 @@ const styles = StyleSheet.create({
     },
     stickySection: {
       height: STICKY_HEADER_HEIGHT,
-      width: 300,
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      paddingTop: TOP,
+      alignItems: 'center',
     },
     stickySectionText: {
       color: 'white',
@@ -155,6 +158,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      paddingTop: TOP,
     },
     fixedSectionText: {
       color: '#999',

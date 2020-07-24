@@ -16,6 +16,7 @@ import TrendingDiag from '../public/TrendingDiag';
 import TrendingItem from '../public/TrendingItem';
 import EventBus from 'react-native-event-bus';
 import EventTypes from '../util/EventTypes';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -201,7 +202,9 @@ class FavoritePage extends React.Component {
         />
 
         return (
-            <View style={styles.tab}>
+            <SafeAreaViewPlus
+                topColor = {theme.themeColor}
+            >
                 {navigationBar}
                 <Tab.Navigator tabBarOptions={
                 {
@@ -215,7 +218,10 @@ class FavoritePage extends React.Component {
             }>
                     {this._screens(this.tabNames)}
                 </Tab.Navigator>
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={styles.tab}>
+                
+            // </View>
             
         );
     }

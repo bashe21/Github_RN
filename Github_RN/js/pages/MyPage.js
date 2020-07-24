@@ -13,6 +13,7 @@ import CustomTheme from '../pages/CustomTheme';
 import { onShowCustomThemeView } from '../actions/theme';
 import actions from '../actions';
 import { connect } from 'react-redux';
+import SafeAreaViewPlus from '../public/SafeAreaViewPlus';
 
 const THEME_COLOR = '#678';
 
@@ -153,7 +154,9 @@ class MyPage extends React.Component {
         />
         
         return (
-            <View style={GlobalStyles.root_container}>
+            <SafeAreaViewPlus 
+                topColor = {theme.themeColor}
+            >
                 {navigationBar}
                 <ScrollView>
                     <TouchableOpacity
@@ -216,7 +219,10 @@ class MyPage extends React.Component {
                     {this.getItem(MoreMenu.Feedback)}
                 </ScrollView>
                 {this.renderCustomThemeView()}
-            </View>
+            </SafeAreaViewPlus>
+            // <View style={GlobalStyles.root_container}>
+                
+            // </View>
         )
     }
 }

@@ -15,7 +15,7 @@ export default {
         backgroundColor: BACKGROUND_COLOR,
     },
     backgroundColor: BACKGROUND_COLOR,
-    nav_bar_height_ios: DeviceInfo.hasNotch() ? 64 : 44,
+    nav_bar_height_ios:  44,
     nav_bar_height_android: 50,
     window_height: window.height,
 }

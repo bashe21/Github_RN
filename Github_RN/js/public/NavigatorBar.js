@@ -1,14 +1,14 @@
 import React from 'react';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import { ViewPropTypes, Text, StatusBar, StyleSheet, View, Platform, TouchableOpacity} from 'react-native';
 import Featcher from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DeviceInfo from 'react-native-device-info';
 
 
-const NAV_BAR_HEIGHT_IOS = DeviceInfo.hasNotch() ? 68 : 44; // 导航栏在iOS种的高度
+const NAV_BAR_HEIGHT_IOS = 44;//DeviceInfo.hasNotch() ? 68 : 44; // 导航栏在iOS种的高度
 const NAV_BAR_HEIGHT_ANDROID = 50; // 导航栏在android中的高度
-const STATUS_BAR_HEIGHT = 20; // 状态栏高度
+const STATUS_BAR_HEIGHT = DeviceInfo.hasNotch() ? 0 : 20; // 状态栏高度
 
 export default class NavigatorBar extends React.Component {
     // getRightButton() {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 60,
         right: 60,
-        top: 20,
+        top: 0,
         bottom: 0,
     },
 
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         width: 60,
-        top: 20,
+        top: 0,
         bottom: 0,
         left: 2,
     }, 
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         width: 60,
-        top: 20,
+        top: 0,
         bottom: 0,
         right: 2,
     }
