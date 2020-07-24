@@ -10,6 +10,7 @@ import AboutMePage from '../pages/about/AboutMePage';
 import CustomKeyPage from '../pages/CustomKeyPage';
 import SortKeyPage from '../pages/SortKeyPage';
 import SearchPage from '../pages/SearchPage';
+import CodePushPage from '../pages/CodePushPage';
 import SplashScreen from 'react-native-splash-screen'
 
 const Stack = createStackNavigator();
@@ -65,6 +66,7 @@ function AppNavigators() {
         <Stack.Screen name = 'CustomKeyPage' component = {CustomKeyPage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'SortKeyPage' component = {SortKeyPage} options = {{headerShown: false}}/>,
         <Stack.Screen name = 'SearchPage' component = {SearchPage} options = {{headerShown: false}}/>,
+        <Stack.Screen name = 'CodePushPage' component = {CodePushPage} options = {{headerShown: false}}/>,
     ]
     
 

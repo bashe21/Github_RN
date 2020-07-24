@@ -99,6 +99,8 @@ target 'Github_RN' do
   
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'Github_RNTests' do
     inherit! :complete
     # Pods for testing

@@ -113,7 +113,10 @@ class MyPage extends React.Component {
                 break;
             case MoreMenu.About_Author:
                 routeName = 'AboutMePage';
-                params
+                break;
+            case MoreMenu.CodePush:
+                routeName = 'CodePushPage';
+                params.theme = this.props.theme;
                 break;
         }
         if (routeName) {
@@ -217,6 +220,9 @@ class MyPage extends React.Component {
                     {/* {反馈} */}
                     <View style={GlobalStyles.line}/>
                     {this.getItem(MoreMenu.Feedback)}
+                    {/* {CodePush} */}
+                    <View style={GlobalStyles.line}/>
+                    {this.getItem(MoreMenu.CodePush)}
                 </ScrollView>
                 {this.renderCustomThemeView()}
             </SafeAreaViewPlus>
