@@ -97,6 +97,8 @@ target 'Github_RN' do
    # 集成QQ/QZone/TIM(完整版7.6M)
    pod 'UMCShare/Social/QQ'
   
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'Github_RNTests' do
     inherit! :complete
     # Pods for testing

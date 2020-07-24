@@ -10,6 +10,7 @@ import AboutMePage from '../pages/about/AboutMePage';
 import CustomKeyPage from '../pages/CustomKeyPage';
 import SortKeyPage from '../pages/SortKeyPage';
 import SearchPage from '../pages/SearchPage';
+import SplashScreen from 'react-native-splash-screen'
 
 const Stack = createStackNavigator();
 const AuthContext = createContext();
@@ -42,6 +43,7 @@ function AppNavigators() {
     React.useEffect(
         () => {
             dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+            SplashScreen.hide();
         },
         []
     );

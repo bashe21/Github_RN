@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import AuthContext from '../navigator/AuthContext'
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1, 

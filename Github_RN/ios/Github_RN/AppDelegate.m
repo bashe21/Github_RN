@@ -10,6 +10,7 @@
 
 #import <UMAnalytics/MobClick.h>
 #import <UMShare/UMShare.h>
+#import <RNSplashScreen.h>
 
 @implementation AppDelegate
 
@@ -29,6 +30,8 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [self initUmeng];
+  
+  [RNSplashScreen show]; 
   return YES;
 }
 
