@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
 })
 
 export default class WelcomePage extends React.Component {
-    static contextType = AuthContext;
     componentDidMount() {
         this.timer = setTimeout(() => {
             // 跳转到首页

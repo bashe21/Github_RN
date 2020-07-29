@@ -1,7 +1,8 @@
 import React from 'react';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import { exp } from 'react-native-reanimated';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+//import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default class BaseItem extends React.Component {
@@ -56,8 +57,8 @@ export default class BaseItem extends React.Component {
         return <TouchableOpacity
             style = {{padding: 6}}
             underlayColor = 'transparent'
-            onPress = {() => {
-                this.onPressFavorite()
+            onPress = {(event) => {
+                this.onPressFavorite(event)
             }}
         >
             <FontAwesome 
