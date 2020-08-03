@@ -41,6 +41,16 @@ export default class NavigatorBar extends React.Component {
     //         </TouchableOpacity>
     //     )
     // }
+    static PropTypes = {
+        style: ViewPropTypes.style,
+        title: PropTypes.string,
+        titleView: PropTypes.element,
+        titleLayoutStyle: ViewPropTypes.style,
+        hide: PropTypes.bool,
+        statusBar: PropTypes.shape(StatusBarShape),
+        rightButton: PropTypes.element,
+        leftButton: PropTypes.element,
+    }
 
     render() {
         let statusBar = !this.props.statusBar.hidden ? 
@@ -83,16 +93,16 @@ const StatusBarShape= { // 设置状态栏所接受的属性
 }
 
 // 提供属性的类型检查
-NavigatorBar.PropTypes = {
-    style: ViewPropTypes.style,
-    title: PropTypes.string,
-    titleView: PropTypes.element,
-    titleLayoutStyle: ViewPropTypes.style,
-    hide: PropTypes.bool,
-    statusBar: PropTypes.shape(StatusBarShape),
-    rightButton: PropTypes.element,
-    leftButton: PropTypes.element,
-}
+// NavigatorBar.PropTypes = {
+//     style: ViewPropTypes.style,
+//     title: PropTypes.string,
+//     titleView: PropTypes.element,
+//     titleLayoutStyle: ViewPropTypes.style,
+//     hide: PropTypes.bool,
+//     statusBar: PropTypes.shape(StatusBarShape),
+//     rightButton: PropTypes.element,
+//     leftButton: PropTypes.element,
+// }
 
 // 设置默认属性
 NavigatorBar.defaultProps = {

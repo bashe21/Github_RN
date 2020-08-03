@@ -7,8 +7,8 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
+            "name": "Github_RN",
+            "url": "http://localhost:8081",
             "webRoot": "${workspaceFolder}"
         }
     ]
