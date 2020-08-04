@@ -58,7 +58,7 @@ export default class TrendingDiag extends React.Component {
                             <View style = {styles.text_container}>
                                 <Text style = {styles.text}>{result.showText}</Text>
                             </View>
-                            {i !== TimeSpan.length - 1 ? <View style = {styles.line}/> : null}
+                            {i !== 2 ? <View style = {styles.line}/> : null}
                         </TouchableOpacity>
                     })}
                 </View>

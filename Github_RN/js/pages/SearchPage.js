@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
 
     statusBar: {
-        //height: 20,
+        height: 20,
     },
     
     bottomButton: {

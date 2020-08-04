@@ -211,9 +211,12 @@ class FavoritePage extends React.Component {
                     tabStyle:{
                         //width: 200,
                         backgroundColor: 'gray',
+                        marginBottom: 2,
                     },
                     scrollEnabled: false,
-                    
+                    activeTintColor: 'red',
+                    inactiveTintColor: 'black',
+                    indicatorStyle: {backgroundColor: 'red',height: 2},
                 }
             }>
                     {this._screens(this.tabNames)}

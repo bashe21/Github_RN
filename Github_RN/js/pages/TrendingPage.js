@@ -304,10 +304,12 @@ class TrendingPage extends React.Component {
                     tabStyle:{
                         width: 200,
                         backgroundColor: 'gray',
+                        marginBottom: 2,
                     },
                     scrollEnabled: true,
                     activeTintColor: 'red',
-                    inactiveTintColor: 'black'
+                    inactiveTintColor: 'black',
+                    indicatorStyle: {backgroundColor: 'red',height: 2},
                     
                 }}
                 lazy = {true}
