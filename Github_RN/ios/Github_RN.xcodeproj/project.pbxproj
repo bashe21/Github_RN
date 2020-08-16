@@ -47,6 +47,7 @@
 		00E356EE1AD99517003FC87E /* Github_RNTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Github_RNTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* Github_RNTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Github_RNTests.m; sourceTree = "<group>"; };
+		0D532E12290425C24122734F /* Pods-Github_RN-tvOSTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOSTests.staging.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOSTests/Pods-Github_RN-tvOSTests.staging.xcconfig"; sourceTree = "<group>"; };
 		0EFBD8208B989640AFCCB266 /* libPods-Github_RN-Github_RNTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN-Github_RNTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Github_RN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Github_RN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Github_RN/AppDelegate.h; sourceTree = "<group>"; };
@@ -58,10 +59,12 @@
 		233CE696EFD85A85AE074F3C /* libPods-Github_RN-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* Github_RN-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Github_RN-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Github_RN-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Github_RN-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3275CC0CECE46928E8EB01EB /* Pods-Github_RN-Github_RNTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-Github_RNTests.staging.xcconfig"; path = "Target Support Files/Pods-Github_RN-Github_RNTests/Pods-Github_RN-Github_RNTests.staging.xcconfig"; sourceTree = "<group>"; };
 		5002504CA9D05B8E3A069E83 /* Pods-Github_RN-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOSTests/Pods-Github_RN-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5BDFCD9940EB6F3F82888A75 /* Pods-Github_RN-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOS/Pods-Github_RN-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		6AA6A186CB8485ED6502ED27 /* Pods-Github_RN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN.debug.xcconfig"; path = "Target Support Files/Pods-Github_RN/Pods-Github_RN.debug.xcconfig"; sourceTree = "<group>"; };
 		74AF90B8E75BCCB793A59DFC /* Pods-Github_RN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN.release.xcconfig"; path = "Target Support Files/Pods-Github_RN/Pods-Github_RN.release.xcconfig"; sourceTree = "<group>"; };
+		7C1DB85BB1B2D9C3AC331DDD /* Pods-Github_RN-tvOS.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOS.staging.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOS/Pods-Github_RN-tvOS.staging.xcconfig"; sourceTree = "<group>"; };
 		84EC10D9B56D19A0AF7C8AF1 /* Pods-Github_RN-Github_RNTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-Github_RNTests.debug.xcconfig"; path = "Target Support Files/Pods-Github_RN-Github_RNTests/Pods-Github_RN-Github_RNTests.debug.xcconfig"; sourceTree = "<group>"; };
 		86BCFA41F66FC16C773DC1EB /* Pods-Github_RN-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOSTests/Pods-Github_RN-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D294D7E24C96C5C00AA5105 /* UMAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMAnalyticsModule.h; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 		8D294D8A24C9864400AA5105 /* UMShareModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMShareModule.h; sourceTree = "<group>"; };
 		8D294D8B24C9864400AA5105 /* UMShareModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMShareModule.m; sourceTree = "<group>"; };
 		C6A18BE9603AAFE1DCE2653A /* libPods-Github_RN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9216CD7A0CF1F0E8B72CB9E /* Pods-Github_RN.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN.staging.xcconfig"; path = "Target Support Files/Pods-Github_RN/Pods-Github_RN.staging.xcconfig"; sourceTree = "<group>"; };
 		D182D6558FB968F9341EEA46 /* Pods-Github_RN-Github_RNTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-Github_RNTests.release.xcconfig"; path = "Target Support Files/Pods-Github_RN-Github_RNTests/Pods-Github_RN-Github_RNTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE462E14EACAFE1FC549E8F8 /* libPods-Github_RN-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Github_RN-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC3C5FC97865EEBB98834275 /* Pods-Github_RN-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Github_RN-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Github_RN-tvOS/Pods-Github_RN-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -143,6 +147,10 @@
 				5BDFCD9940EB6F3F82888A75 /* Pods-Github_RN-tvOS.release.xcconfig */,
 				5002504CA9D05B8E3A069E83 /* Pods-Github_RN-tvOSTests.debug.xcconfig */,
 				86BCFA41F66FC16C773DC1EB /* Pods-Github_RN-tvOSTests.release.xcconfig */,
+				C9216CD7A0CF1F0E8B72CB9E /* Pods-Github_RN.staging.xcconfig */,
+				3275CC0CECE46928E8EB01EB /* Pods-Github_RN-Github_RNTests.staging.xcconfig */,
+				7C1DB85BB1B2D9C3AC331DDD /* Pods-Github_RN-tvOS.staging.xcconfig */,
+				0D532E12290425C24122734F /* Pods-Github_RN-tvOSTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1093,7 +1101,7 @@
 		};
 		8D6B10D424CAB5820092669B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74AF90B8E75BCCB793A59DFC /* Pods-Github_RN.release.xcconfig */;
+			baseConfigurationReference = C9216CD7A0CF1F0E8B72CB9E /* Pods-Github_RN.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1117,7 +1125,7 @@
 		};
 		8D6B10D524CAB5820092669B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D182D6558FB968F9341EEA46 /* Pods-Github_RN-Github_RNTests.release.xcconfig */;
+			baseConfigurationReference = 3275CC0CECE46928E8EB01EB /* Pods-Github_RN-Github_RNTests.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1137,7 +1145,7 @@
 		};
 		8D6B10D624CAB5820092669B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BDFCD9940EB6F3F82888A75 /* Pods-Github_RN-tvOS.release.xcconfig */;
+			baseConfigurationReference = 7C1DB85BB1B2D9C3AC331DDD /* Pods-Github_RN-tvOS.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1165,7 +1173,7 @@
 		};
 		8D6B10D724CAB5820092669B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86BCFA41F66FC16C773DC1EB /* Pods-Github_RN-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 0D532E12290425C24122734F /* Pods-Github_RN-tvOSTests.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
